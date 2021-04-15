@@ -1,5 +1,5 @@
 # EZVendor
-Plugin for TC HUD. Goal is to filter 95% of bad rares + module easy to update structure
+Goal is to filter 95% of bad rares + module structure easy to update
 
 ![ezv2](https://user-images.githubusercontent.com/1397582/114292244-ae4cb780-9a95-11eb-96f3-fa6395cdd308.gif)
 
