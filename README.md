@@ -5,7 +5,7 @@ Goal is to filter 95% of bad rares + module structure easy to update
 
 # Features
 
-https://github.com/vadash/EZVendor/blob/master/EZVendorCore.cs#L39
+https://github.com/vadash/EZVendor/blob/master/EZVendorCore.cs#L60
 
 # Install
 
