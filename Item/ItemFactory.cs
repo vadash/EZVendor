@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
+using ExileCore.Shared.Enums;
 using EZVendor.Item.Filters;
 using EZVendor.Item.Ninja;
 
@@ -34,8 +35,17 @@ namespace EZVendor.Item
                     !item.IsValid ||
                     !item.HasComponent<Base>())
                     return Actions.Keep;
+                
+                if (item.GetComponent<Mods>()?.ItemMods == null)
+                {
+                    return item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Rare ||
+                           item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Unique
+                        ? Actions.Vendor
+                        : Actions.Keep;
+                }
 
                 #endregion
+
 
                 List<IEvaluate> filters;
                 if (item.HasComponent<Mods>())

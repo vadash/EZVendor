@@ -22,6 +22,8 @@ namespace EZVendor.Item.Filters
         {
             try
             {
+                if (ItemModsComponent.UniqueName.Length <= 4)
+                    return Actions.Vendor;
                 var garbage = _ninjaProvider.GetCheapUniques();
                 return garbage.Contains(ItemModsComponent.UniqueName)
                     ? Actions.Vendor
