@@ -47,7 +47,8 @@ namespace EZVendor
                 GameController,
                 _ninja,
                 Settings.VendorTransmutes,
-                Settings.VendorScraps);
+                Settings.VendorScraps,
+                Settings.BypassBrokenItemMods);
             Task.Run(() =>
             {
                 LogMessage("Started loading ninja data", 10);

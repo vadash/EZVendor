@@ -34,6 +34,9 @@ namespace EZVendor
         [Menu("Vendor scraps")]
         public ToggleNode VendorScraps { get; set; } = new ToggleNode(true);
         
+        [Menu("Bypass broken ItemMods component")]
+        public ToggleNode BypassBrokenItemMods { get; set; } = new ToggleNode(false);
+        
         [Menu("Extra log (for debug)")] 
         public ToggleNode DebugLog { get; set; } = new ToggleNode(false);
 
