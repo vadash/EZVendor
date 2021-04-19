@@ -25,6 +25,12 @@ namespace EZVendor.Item.Filters
         {
             try
             {
+                if (BaseItemType.ClassName == "Incubator" ||
+                    Item.Path.Contains(@"Incubation"))
+                {
+                    return Actions.Keep;
+                }
+                
                 if (_vendorTransmutes &&
                     new Random().NextDouble() < 0.75 &&
                     Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
