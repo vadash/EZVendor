@@ -7,19 +7,31 @@ namespace EZVendor.Item.Filters
 {
     internal class VendorForAltsFilter : AbstractRareItem
     {
+        private readonly bool _vendorTransmutes;
+        private readonly bool _vendorScraps;
+
         public VendorForAltsFilter(
             GameController gameController,
-            NormalInventoryItem normalInventoryItem)
+            NormalInventoryItem normalInventoryItem,
+            bool vendorTransmutes,
+            bool vendorScraps)
             : base(gameController, normalInventoryItem)
         {
+            _vendorTransmutes = vendorTransmutes;
+            _vendorScraps = vendorScraps;
         }
 
         public override Actions Evaluate()
         {
             try
             {
-                // vendor transmutes
-                if (Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
+                if (_vendorTransmutes &&
+                    new Random().NextDouble() < 0.75 &&
+                    Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
+                    return Actions.Vendor;
+                
+                if (_vendorScraps &&
+                    Item.Path == @"Metadata/Items/Currency/CurrencyArmourQuality")
                     return Actions.Vendor;
 
                 if (ItemRarity == ItemRarity.Magic ||

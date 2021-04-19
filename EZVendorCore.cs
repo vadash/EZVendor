@@ -45,7 +45,9 @@ namespace EZVendor
                 Settings.LeagueName2);
             _itemFactory = new ItemFactory(
                 GameController,
-                _ninja);
+                _ninja,
+                Settings.VendorTransmutes,
+                Settings.VendorScraps);
             Task.Run(() =>
             {
                 LogMessage("Started loading ninja data", 10);

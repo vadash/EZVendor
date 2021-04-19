@@ -13,14 +13,20 @@ namespace EZVendor.Item
     {
         private readonly GameController _gameController;
         private readonly INinjaProvider _ninjaProvider;
+        private readonly bool _vendorTransmutes;
+        private readonly bool _vendorScraps;
 
         public ItemFactory(
             GameController gameController,
-            INinjaProvider ninjaProvider
+            INinjaProvider ninjaProvider,
+            bool vendorTransmutes,
+            bool vendorScraps
         )
         {
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
+            _vendorTransmutes = vendorTransmutes;
+            _vendorScraps = vendorScraps;
         }
 
         public Actions Evaluate(NormalInventoryItem normalInventoryItem)
@@ -46,12 +52,11 @@ namespace EZVendor.Item
 
                 #endregion
 
-
                 List<IEvaluate> filters;
                 if (item.HasComponent<Mods>())
                     filters = new List<IEvaluate>
                     {
-                        new VendorForAltsFilter(_gameController, normalInventoryItem),
+                        new VendorForAltsFilter(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps),
                         new SixSocketFilter(_gameController, normalInventoryItem),
                         new SixLinkFilter(_gameController, normalInventoryItem),
                         new InfluencedFilter(_gameController, normalInventoryItem),
@@ -70,7 +75,7 @@ namespace EZVendor.Item
                 else
                     filters = new List<IEvaluate>
                     {
-                        new VendorForAltsFilter(_gameController, normalInventoryItem)
+                        new VendorForAltsFilter(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps),
                     };
 
                 #region decide vendor/Keep

@@ -28,6 +28,12 @@ namespace EZVendor
         [Menu("Click cancel button instead (for debug)")]
         public ToggleNode AutoClickDebug { get; set; } = new ToggleNode(false);
 
+        [Menu("Vendor transmutes")]
+        public ToggleNode VendorTransmutes { get; set; } = new ToggleNode(true);
+        
+        [Menu("Vendor scraps")]
+        public ToggleNode VendorScraps { get; set; } = new ToggleNode(true);
+        
         [Menu("Extra log (for debug)")] 
         public ToggleNode DebugLog { get; set; } = new ToggleNode(false);
 
