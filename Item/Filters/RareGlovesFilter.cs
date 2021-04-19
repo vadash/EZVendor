@@ -64,7 +64,7 @@ namespace EZVendor.Item.Filters
 
                 #endregion
 
-                return InitialWeight + weight >= 3
+                return InitialWeight + weight >= 4
                     ? Actions.Keep
                     : Actions.Vendor;
             }
