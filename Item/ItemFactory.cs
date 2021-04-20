@@ -45,13 +45,12 @@ namespace EZVendor.Item
                     !item.HasComponent<Base>())
                     return Actions.Keep;
                 
-                if (_bypassBrokenItemMods &&
-                    item.GetComponent<Mods>()?.ItemMods == null)
+                if (item.GetComponent<Mods>()?.ItemMods == null)
                 {
-                    return item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Rare ||
-                           item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Unique
-                        ? Actions.Vendor
-                        : Actions.CantDecide;
+                    if (item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Rare) 
+                        return Actions.Vendor;
+                    if (_bypassBrokenItemMods && item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Unique)
+                        return Actions.Vendor;
                 }
 
                 #endregion

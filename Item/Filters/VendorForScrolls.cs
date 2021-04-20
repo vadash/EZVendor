@@ -29,7 +29,7 @@ namespace EZVendor.Item.Filters
             }
                 
             if (_vendorTransmutes &&
-                new Random().NextDouble() < 0.75 &&
+                new Random().NextDouble() < 0.66 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
                 return Actions.Vendor;
                 
