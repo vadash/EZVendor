@@ -110,7 +110,7 @@ namespace EZVendor
 
             if (Settings.CopyStatsHotkey.PressedOnce())
             {
-                var invItem = GetInventoryItem(GameController.IngameState.UIHoverElement.Address);
+                var invItem = GetInventoryItem(GameController.IngameState.UIHover.Address);
                 var itemComponent = invItem.Item.GetComponent<Mods>();
                 var stats = itemComponent.UniqueName;
                 try
@@ -457,7 +457,7 @@ namespace EZVendor
                     Input.MouseMove();
                 }
                 yield return new WaitTime(20 + Latency / 5);
-                if (GameController.IngameState.UIHoverElement.Address != invItem.Address) continue;
+                if (GameController.IngameState.UIHover.Address != invItem.Address) continue;
                 Input.Click(mouseButton);
                 break;
             }

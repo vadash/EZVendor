@@ -166,9 +166,9 @@ namespace EZVendor.Item.Filters
             try
             {
                 foreach (var mod in ItemMods.Where(mod => mod.Group.Contains("Resist")))
-                    if (mod.Group.Contains("AllResistances")) total += mod.Values[0] * 3;
-                    else if (mod.Group.Contains("And")) total += mod.Values[0] * 2;
-                    else total += mod.Values[0];
+                    if (mod.Group.Contains("AllResistances")) total += mod.Value1 * 3;
+                    else if (mod.Group.Contains("And")) total += mod.Value1 * 2;
+                    else total += mod.Value1;
             }
             catch (Exception)
             {
@@ -298,7 +298,7 @@ namespace EZVendor.Item.Filters
             {
                 total = ItemMods
                     .Where(mod => mod.Group.ToLower().Contains(partialModGroup.ToLower()))
-                    .Sum(mod => mod.Values[0]);
+                    .Sum(mod => mod.Value1);
             }
             catch (Exception)
             {
@@ -315,7 +315,7 @@ namespace EZVendor.Item.Filters
             {
                 total = ItemMods
                     .Where(mod => mod.Name.ToLower().Contains(partialModName.ToLower()))
-                    .Sum(mod => mod.Values[0]);
+                    .Sum(mod => mod.Value1);
             }
             catch (Exception)
             {
@@ -333,7 +333,7 @@ namespace EZVendor.Item.Filters
                 total = ItemMods
                     .Where(mod => mod.Name.ToLower().Contains(partialModName.ToLower()))
                     .Where(mod => mod.Group.ToLower().Contains(partialModGroup.ToLower()))
-                    .Sum(mod => mod.Values[0]);
+                    .Sum(mod => mod.Value1);
             }
             catch (Exception)
             {
@@ -350,7 +350,7 @@ namespace EZVendor.Item.Filters
             {
                 total = ItemMods
                     .Where(mod => mod.Group.ToLower().Contains(partialModGroup.ToLower()))
-                    .Sum(mod => (mod.Values[0] + mod.Values[1]) / 2f);
+                    .Sum(mod => (mod.Value1 + mod.Value2) / 2f);
             }
             catch (Exception)
             {
