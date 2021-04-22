@@ -89,6 +89,28 @@ namespace EZVendor
             }
         }
 
+        public override void ReceiveEvent(string eventId, object args)
+        {
+            if (!Settings.Enable.Value)
+            {
+                return;
+            }
+
+            switch (eventId)
+            {
+                case "start_ezv":
+                    if (Core.ParallelRunner.FindByName(MainCoroutineName) == null)
+                    {
+                        LogMessage("[EZV] started");
+                        PublishEvent("ezv_started", null);
+                        StartMainCoroutine();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public override Job Tick()
         {
             #region start main routine
@@ -97,12 +119,16 @@ namespace EZVendor
                 Core.ParallelRunner.FindByName(MainCoroutineName) == null)
             {
                 LogMessage("[EZV] started");
+                PublishEvent("ezv_started", null);
                 StartMainCoroutine();
             }
 
             if (Settings.StopHotkey.PressedOnce() &&
                 Core.ParallelRunner?.FindByName(MainCoroutineName)?.Done(true) == true)
+            {
                 LogMessage("[EZV] aborted");
+                PublishEvent("ezv_finished", null);
+            }
 
             #endregion
 
@@ -212,11 +238,13 @@ namespace EZVendor
                 yield return WaitForClosedInventory();
                 if (!badVendorRecipes)
                 {
+                    PublishEvent("ezv_finished", null);
                     LogMessage("[EZV] finished");
                     yield break;
                 }
             }
-            
+
+            PublishEvent("ezv_finished", null);
             LogMessage("[EZV] timeout");
         }
 
