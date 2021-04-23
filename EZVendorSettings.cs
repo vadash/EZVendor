@@ -24,6 +24,9 @@ namespace EZVendor
 
         [Menu("Auto click sell window accept button (enable for auto sell)")]
         public ToggleNode AutoClickAcceptButton { get; set; } = new ToggleNode(true);
+        
+        [Menu("Vendor influenced gear (enable for auto sell)")]
+        public ToggleNode VendorInfluenced { get; set; } = new ToggleNode(true);
 
         [Menu("Click cancel button instead (for debug)")]
         public ToggleNode AutoClickDebug { get; set; } = new ToggleNode(false);

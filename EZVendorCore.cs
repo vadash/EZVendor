@@ -48,7 +48,8 @@ namespace EZVendor
                 _ninja,
                 Settings.VendorTransmutes,
                 Settings.VendorScraps,
-                Settings.BypassBrokenItemMods);
+                Settings.BypassBrokenItemMods,
+                Settings.VendorInfluenced);
             Task.Run(() =>
             {
                 LogMessage("Started loading ninja data", 10);
