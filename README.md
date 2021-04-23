@@ -15,6 +15,6 @@ Extract to `PoEHelper\Plugins\Source`
 
 Delete `-master` from folder name
 
-Correct path is `PoEHelper\Plugins\Source\EZVendor` and inside should be sln file
+Correct path is `PoEHelper\Plugins\Source\EZVendor` and inside should be cs file
 
 You DONT need to compile. It will run just fine
