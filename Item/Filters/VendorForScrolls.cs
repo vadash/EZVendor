@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using ExileCore;
+using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
 
 namespace EZVendor.Item.Filters
@@ -29,6 +31,8 @@ namespace EZVendor.Item.Filters
             }
                 
             if (_vendorTransmutes &&
+                Item.HasComponent<Stack>() &&
+                Item.GetComponent<Stack>().Size <= 15 && // dont vendor full stack transmutes
                 new Random().NextDouble() < 0.6 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
                 return Actions.Vendor;
