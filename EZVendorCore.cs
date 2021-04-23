@@ -351,6 +351,18 @@ namespace EZVendor
                     removedSomething |= Remove(vendorList, key);
                 }
             }
+            
+            // transmute + 2 amulets
+            if (vendorList.Count(tuple => tuple.Item2.Item.Path.Contains("Amulets")) >= 2)
+            {
+                removedSomething |= Remove(vendorList, @"Metadata/Items/Currency/CurrencyUpgradeToMagic");
+            }
+            
+            // weapon + whetstone
+            if (vendorList.Count(tuple => tuple.Item2.Item.Path.Contains("Weapons")) >= 1)
+            {
+                removedSomething |= Remove(vendorList, @"Metadata/Items/Currency/CurrencyWeaponQuality");
+            }
 
             return removedSomething;
         }

@@ -29,12 +29,18 @@ namespace EZVendor.Item.Filters
             }
                 
             if (_vendorTransmutes &&
-                new Random().NextDouble() < 0.66 &&
+                new Random().NextDouble() < 0.6 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
                 return Actions.Vendor;
                 
             if (_vendorScraps &&
+                new Random().NextDouble() < 0.85 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyArmourQuality")
+                return Actions.Vendor;
+            
+            if (_vendorScraps &&
+                new Random().NextDouble() < 0.85 &&
+                Item.Path == @"Metadata/Items/Currency/CurrencyWeaponQuality")
                 return Actions.Vendor;
             
             return Actions.CantDecide;

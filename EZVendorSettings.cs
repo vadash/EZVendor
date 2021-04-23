@@ -34,7 +34,7 @@ namespace EZVendor
         [Menu("Vendor transmutes")]
         public ToggleNode VendorTransmutes { get; set; } = new ToggleNode(true);
         
-        [Menu("Vendor scraps")]
+        [Menu("Vendor scraps/whetstones")]
         public ToggleNode VendorScraps { get; set; } = new ToggleNode(true);
         
         [Menu("Bypass broken ItemMods component")]
