@@ -36,8 +36,11 @@ namespace EZVendor
         
         [Menu("Vendor scraps/whetstones")]
         public ToggleNode VendorScraps { get; set; } = new ToggleNode(true);
-        
-        [Menu("Bypass broken ItemMods component")]
+       
+        [Menu("Less garbage (enable after first week of league)")]
+        public ToggleNode StricterFiltering { get; set; } = new ToggleNode(true);
+
+        [Menu("Bypass broken ItemMods component (debug)")]
         public ToggleNode BypassBrokenItemMods { get; set; } = new ToggleNode(false);
         
         [Menu("Extra log (for debug)")] 
@@ -45,6 +48,6 @@ namespace EZVendor
 
         public ToggleNode Enable { get; set; } = new ToggleNode(false);
         
-        public string LeagueName2 = "Ritual";
+        public string LeagueName3 = "Ultimatum";
     }
 }

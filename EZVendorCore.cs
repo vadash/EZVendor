@@ -42,14 +42,15 @@ namespace EZVendor
             _ninja = new NinjaUniqueProvider(
                 Settings.ChaosUniqueCutoff,
                 DirectoryFullName,
-                Settings.LeagueName2);
+                Settings.LeagueName3);
             _itemFactory = new ItemFactory(
                 GameController,
                 _ninja,
                 Settings.VendorTransmutes,
                 Settings.VendorScraps,
                 Settings.BypassBrokenItemMods,
-                Settings.VendorInfluenced);
+                Settings.VendorInfluenced,
+                Settings.StricterFiltering);
             Task.Run(() =>
             {
                 LogMessage("Started loading ninja data", 10);
@@ -82,7 +83,7 @@ namespace EZVendor
                        "it doesnt sell trash item then move this item to player inventory, \r\n" +
                        "mouse over it, press debug key and send me msg");
             ImGui.NewLine();
-            ImGui.InputText("League name", ref Settings.LeagueName2, 255);
+            ImGui.InputText("League name", ref Settings.LeagueName3, 255);
             base.DrawSettings();
             if (ImGui.Button("Delete ninja cache (after you change settings)"))
             {

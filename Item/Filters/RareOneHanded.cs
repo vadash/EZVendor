@@ -8,17 +8,19 @@ namespace EZVendor.Item.Filters
 {
     internal class RareOneHanded : AbstractRareItem
     {
+        private readonly bool _lessGarbage;
+
         private readonly string[] _oneHandedBases =
         {
             "Dagger", "Rune Dagger", "Wand", "Sceptre", "Thrusting One Hand Sword",
             "Claw", "One Hand Sword", "One Hand Axe", "One Hand Mace"
         };
 
-        public RareOneHanded(
-            GameController gameController,
-            NormalInventoryItem normalInventoryItem)
+        public RareOneHanded(GameController gameController,
+            NormalInventoryItem normalInventoryItem, bool lessGarbage)
             : base(gameController, normalInventoryItem)
         {
+            _lessGarbage = lessGarbage;
         }
 
         public override Actions Evaluate()

@@ -7,9 +7,8 @@ namespace EZVendor.Item.Filters
 {
     internal class RareJewel : AbstractRareItem
     {
-        public RareJewel(
-            GameController gameController,
-            NormalInventoryItem normalInventoryItem)
+        public RareJewel(GameController gameController,
+            NormalInventoryItem normalInventoryItem, bool lessGarbage)
             : base(gameController, normalInventoryItem)
         {
         }

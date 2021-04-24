@@ -8,11 +8,13 @@ namespace EZVendor.Item.Filters
 {
     internal class RareBeltFilter : AbstractRareItem
     {
-        public RareBeltFilter(
-            GameController gameController,
-            NormalInventoryItem normalInventoryItem)
+        private readonly bool _lessGarbage;
+
+        public RareBeltFilter(GameController gameController,
+            NormalInventoryItem normalInventoryItem, bool lessGarbage)
             : base(gameController, normalInventoryItem)
         {
+            _lessGarbage = lessGarbage;
         }
 
         public override Actions Evaluate()
@@ -72,7 +74,7 @@ namespace EZVendor.Item.Filters
 
                 #endregion
 
-                return InitialWeight + weight >= 4f
+                return (_lessGarbage ? 1 : 0) + InitialWeight + weight >= 4f
                     ? Actions.Keep
                     : Actions.Vendor;
             }

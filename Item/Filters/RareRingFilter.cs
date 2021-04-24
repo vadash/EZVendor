@@ -8,9 +8,8 @@ namespace EZVendor.Item.Filters
 {
     internal class RareRingFilter : AbstractRareItem
     {
-        public RareRingFilter(
-            GameController gameController,
-            NormalInventoryItem normalInventoryItem)
+        public RareRingFilter(GameController gameController,
+            NormalInventoryItem normalInventoryItem, bool lessGarbage)
             : base(gameController, normalInventoryItem)
         {
         }
