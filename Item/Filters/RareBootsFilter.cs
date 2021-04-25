@@ -66,7 +66,7 @@ namespace EZVendor.Item.Filters
 
                 #endregion
 
-                return (_lessGarbage ? 1 : 0) + InitialWeight + weight >= 5f
+                return (_lessGarbage ? -1 : 0) + InitialWeight + weight >= 5f
                     ? Actions.Keep
                     : Actions.Vendor;
             }
