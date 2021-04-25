@@ -133,7 +133,7 @@ namespace EZVendor
                     foreach (var itemMod in itemComponent.ItemMods)
                         stats += "name: [" + itemMod.Name + "] " +
                                  "group: [" + itemMod.Group + "] " +
-                                 "values: " + itemMod.Value1 + " " + itemMod.Value2 +
+                                 "values: " + itemMod.Values[0] + " " + itemMod.Values[1] +
                                  Environment.NewLine;
                 }
                 catch (Exception e)
@@ -202,10 +202,39 @@ namespace EZVendor
                 yield return OpenNPCTrade();
                 if (Settings.DebugLog) LogMessage("[EZV] WaitForOpenInventory");
                 yield return WaitForOpenInventory();
-                if (Settings.DebugLog) LogMessage("[EZV] AnalyzeIdentifiedItems");
-                AnalyzeIdentifiedItems(out var vendorList, out var vendorBases);
-                if (Settings.DebugLog) LogMessage("[EZV] RemoveBadVendorRecipes");
-                var badVendorRecipes = RemoveBadVendorRecipes(vendorList, vendorBases);
+
+                #region AnalyzeIdentifiedItems
+
+                IList<Tuple<long, NormalInventoryItem>> vendorList;
+                IDictionary<string, int> vendorBases;
+                try
+                {
+                    if (Settings.DebugLog) LogMessage("[EZV] AnalyzeIdentifiedItems");
+                    AnalyzeIdentifiedItems(out vendorList, out vendorBases);
+                }
+                catch (Exception e)
+                {
+                    LogError($"[EZV] AnalyzeIdentifiedItems " + e.StackTrace, 30);
+                    yield break;
+                }                
+
+                #endregion
+
+                #region RemoveBadVendorRecipes
+
+                var badVendorRecipes = false;
+                try
+                {
+                    if (Settings.DebugLog) LogMessage("[EZV] RemoveBadVendorRecipes");
+                    badVendorRecipes = RemoveBadVendorRecipes(vendorList, vendorBases);
+                }
+                catch (Exception e)
+                {
+                    LogError($"[EZV] RemoveBadVendorRecipes " + e.StackTrace, 30);
+                }                
+
+                #endregion
+               
                 if (Settings.DebugLog) LogMessage("[EZV] VendorGarbage");
                 yield return DoVendorGarbage(vendorList);
                 if (Settings.DebugLog) LogMessage("[EZV] ClickSellWindowAcceptButton");
@@ -271,15 +300,25 @@ namespace EZVendor
             {
                 foreach (var invItem in GetInventoryItems())
                 {
-                    var action = _itemFactory.Evaluate(invItem);
-                    if (action == Actions.Vendor)
+                    try
                     {
+                        if (invItem.Item.ComponentList == 0 ||
+                            invItem.Item.Rarity == MonsterRarity.Error ||
+                            !invItem.Item.HasComponent<Base>() ||
+                            _itemFactory.Evaluate(invItem) == Actions.Vendor)
+                        {
+                            vendorList.Add(new Tuple<long, NormalInventoryItem>(invItem.Address, invItem));
+                            var key = invItem.Item.Path;
+                            if (pathCount.ContainsKey(key))
+                                pathCount[key]++;
+                            else
+                                pathCount.Add(key, 1);
+                        }                   
+                    }
+                    catch (Exception)
+                    {
+                        LogMessage($"[EZV] Found krangled item. Selling", 30);
                         vendorList.Add(new Tuple<long, NormalInventoryItem>(invItem.Address, invItem));
-                        var key = invItem.Item.Path;
-                        if (pathCount.ContainsKey(key))
-                            pathCount[key]++;
-                        else
-                            pathCount.Add(key, 1);
                     }
                 }
             }
@@ -556,7 +595,6 @@ namespace EZVendor
         {
             return GetInventoryItems()?.FirstOrDefault(item => item?.Item?.Path?.Contains(path) == true);
         }
-
         
         private IEnumerable<NormalInventoryItem> GetInventoryItems()
         {
