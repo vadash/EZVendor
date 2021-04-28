@@ -66,6 +66,7 @@
     <Compile Include="Item\Filters\InfluencedFilter.cs" />
     <Compile Include="Item\Filters\MapFilter.cs" />
     <Compile Include="Item\Filters\AbstractRareItem.cs" />
+    <Compile Include="Item\Filters\PathFilter.cs" />
     <Compile Include="Item\Filters\RareAbyssJewel.cs" />
     <Compile Include="Item\Filters\RareAmuletFilter.cs" />
     <Compile Include="Item\Filters\RareBeltFilter.cs" />

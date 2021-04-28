@@ -51,6 +51,10 @@ namespace EZVendor.Item
                     !item.HasComponent<Base>())
                     return Actions.Keep;
                 
+                #endregion
+                
+                #region vendor rares with broken ItemMods
+              
                 if (item.GetComponent<Mods>()?.ItemMods == null)
                 {
                     if (item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Rare) 
@@ -66,6 +70,7 @@ namespace EZVendor.Item
                 {
                     filters = new List<IEvaluate>();
                     if (!_vendorInfluenced) filters.Add(new InfluencedFilter(_gameController, normalInventoryItem));
+                    filters.Add(new PathFilter(_gameController, normalInventoryItem));
                     filters.Add(new VendorForScrolls(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps));
                     filters.Add(new VendorForAltsFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
