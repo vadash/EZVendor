@@ -51,12 +51,6 @@ namespace EZVendor
                 Settings.BypassBrokenItemMods,
                 Settings.VendorInfluenced,
                 Settings.StricterFiltering);
-            Task.Run(() =>
-            {
-                LogMessage("Started loading ninja data", 10);
-                _ninja.GetCheapUniques();
-                LogMessage("Finished loading ninja data", 10);
-            });
             return true;
         }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -13,6 +15,7 @@ namespace EZVendor.Item.Ninja
         private readonly string _dbName;
         private readonly List<string> _ninjaUniquesUrls;
         private readonly int _uniquePriceChaosCutoff;
+        private HashSet<string> _cheapUniques;
 
         public NinjaUniqueProvider(
             int uniquePriceChaosCutoff,
@@ -34,15 +37,16 @@ namespace EZVendor.Item.Ninja
                 @"https://poe.ninja/api/data/itemoverview?league=" + leagueName +
                 @"&type=UniqueAccessory&language=en"
             };
+            Task.Run(UpdateCheapUniques);
         }
 
-        public HashSet<string> GetCheapUniques()
+        private void UpdateCheapUniques()
         {
-            var cachedData = LoadDataFromFile(out var databaseAgeHours);
-            if (databaseAgeHours <= 48) return cachedData;
-            if (!GetDataOnline(out var data)) return cachedData;
+            _cheapUniques = LoadDataFromFile(out var databaseAgeHours);
+            if (databaseAgeHours <= 24) return;
+            if (!GetDataOnline(out var data)) return;
+            _cheapUniques = data;
             SaveData(data);
-            return data;
         }
 
         private HashSet<string> LoadDataFromFile(out double databaseAgeHours)
@@ -110,6 +114,11 @@ namespace EZVendor.Item.Ninja
             {
                 // ignored
             }
+        }
+
+        public HashSet<string> GetCheapUniques()
+        {
+            return _cheapUniques;
         }
     }
 }
