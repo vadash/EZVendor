@@ -19,6 +19,7 @@ namespace EZVendor.Item
         private readonly bool _vendorScraps;
         private readonly bool _bypassBrokenItemMods;
         private readonly bool _vendorInfluenced;
+        private readonly bool _vendorAllRares;
         private readonly bool _lessGarbage;
 
         public ItemFactory(GameController gameController,
@@ -26,7 +27,8 @@ namespace EZVendor.Item
             bool vendorTransmutes,
             bool vendorScraps,
             bool bypassBrokenItemMods,
-            bool vendorInfluenced, 
+            bool vendorInfluenced,
+            bool vendorAllRares,
             bool lessGarbage)
         {
             _gameController = gameController;
@@ -35,6 +37,7 @@ namespace EZVendor.Item
             _vendorScraps = vendorScraps;
             _bypassBrokenItemMods = bypassBrokenItemMods;
             _vendorInfluenced = vendorInfluenced;
+            _vendorAllRares = vendorAllRares;
             _lessGarbage = lessGarbage;
         }
 
@@ -77,14 +80,14 @@ namespace EZVendor.Item
                     filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
                     filters.Add(new EnchantedHelmetFilter(_gameController, normalInventoryItem));
-                    filters.Add(new RareRingFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareAmuletFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareBeltFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareGlovesFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareBootsFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareJewel(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareAbyssJewel(_gameController, normalInventoryItem, _lessGarbage));
-                    filters.Add(new RareOneHanded(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareRingFilter(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareAmuletFilter(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareBeltFilter(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareGlovesFilter(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareBootsFilter(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareJewel(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareAbyssJewel(_gameController, normalInventoryItem, _lessGarbage));
+                    if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, _lessGarbage));
                     filters.Add(new UniqueItemFilter(_gameController, normalInventoryItem, _ninjaProvider));
                 }
                 else

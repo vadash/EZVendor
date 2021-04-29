@@ -46,6 +46,8 @@ namespace EZVendor.Item.Filters
                         case "One Hand Mace":
                         case "Two Hand Mace":
                         case "Bow":
+                        case "AbyssJewel":
+                        case "Jewel":
                             return Actions.Vendor;
                         default:
                             return Actions.CantDecide;

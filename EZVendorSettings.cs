@@ -39,6 +39,9 @@ namespace EZVendor
        
         [Menu("Less garbage (enable after first week of league)")]
         public ToggleNode StricterFiltering { get; set; } = new ToggleNode(true);
+        
+        [Menu("Vendor all rares")]
+        public ToggleNode VendorAllRares { get; set; } = new ToggleNode(false);
 
         [Menu("Bypass broken ItemMods component (debug)")]
         public ToggleNode BypassBrokenItemMods { get; set; } = new ToggleNode(false);

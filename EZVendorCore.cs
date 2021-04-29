@@ -49,6 +49,7 @@ namespace EZVendor
                 Settings.VendorScraps,
                 Settings.BypassBrokenItemMods,
                 Settings.VendorInfluenced,
+                Settings.VendorAllRares,
                 Settings.StricterFiltering);
             return true;
         }
