@@ -49,5 +49,11 @@ namespace EZVendor
         public ToggleNode Enable { get; set; } = new ToggleNode(false);
         
         public string LeagueName3 = "Ultimatum";
+        
+        [Menu("Delay after mouse move")]
+        public RangeNode<int> Delay1AfterMouseMove { get; set; } = new RangeNode<int>(5, 0, 100);
+        
+        [Menu("Delay after click")]
+        public RangeNode<int> Delay2AfterClick { get; set; } = new RangeNode<int>(25, 0, 100);
     }
 }

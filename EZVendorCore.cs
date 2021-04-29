@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ExileCore;
 using ExileCore.PoEMemory;
@@ -432,7 +431,7 @@ namespace EZVendor
         {
             LogMessage($"[EZV] Want to sell {itemList.Count} items");
             if (itemList.Count == 0) yield break;
-            yield return ClickAll(itemList, 3, Keys.ControlKey, MouseButtons.Left);
+            yield return ClickAll(itemList, 4, Keys.ControlKey, MouseButtons.Left);
         }
 
         private IEnumerator DoUnid(IList<Tuple<long, NormalInventoryItem>> itemList)
@@ -447,7 +446,7 @@ namespace EZVendor
             }
             Input.KeyDown(Keys.ShiftKey);
             yield return ClickItem(scrollOfWisdom, MouseButtons.Right);
-            yield return ClickAll(itemList, 2, Keys.ShiftKey, MouseButtons.Left);
+            yield return ClickAll(itemList, 3, Keys.ShiftKey, MouseButtons.Left);
         }
 
         /// <summary>
@@ -496,17 +495,18 @@ namespace EZVendor
         /// <returns></returns>
         private IEnumerator ClickItem(Element invItem, MouseButtons mouseButton)
         {
-            for (var j = 0; j < 25; j++) // 500 + 5 * Latency ms timeout
+            for (var j = 0; j < 20; j++) // timeout = 20 x DelayAfterMouseMove
             {
-                if (j % 5 == 0)
+                Input.SetCursorPos(invItem.GetClientRect().ClickRandom());
+                Input.MouseMove();
+                yield return new WaitTime(Settings.Delay1AfterMouseMove);
+                if (GameController.IngameState.UIHoverElement.Address > 0 &&
+                    GameController.IngameState.UIHoverElement.Address == invItem.Address)
                 {
-                    Input.SetCursorPos(invItem.GetClientRect().ClickRandom());
-                    Input.MouseMove();
+                    Input.Click(mouseButton);
+                    yield return new WaitTime(Settings.Delay2AfterClick);
+                    break;
                 }
-                yield return new WaitTime(20 + Latency / 5);
-                if (GameController.IngameState.UIHoverElement.Address != invItem.Address) continue;
-                Input.Click(mouseButton);
-                break;
             }
         }
 
