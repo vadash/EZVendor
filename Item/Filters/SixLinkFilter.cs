@@ -19,7 +19,7 @@ namespace EZVendor.Item.Filters
             try
             {
                 if (!Item.HasComponent<Sockets>()) return Actions.CantDecide;
-                if (ItemModsComponent.UniqueName == "Tabula") return Actions.Vendor;
+                if (ItemModsComponent.UniqueName.Contains("Tabula Rasa")) return Actions.Vendor;
                 return Item.GetComponent<Sockets>().LargestLinkSize == 6
                     ? Actions.Keep
                     : Actions.CantDecide;

@@ -50,7 +50,8 @@ namespace EZVendor
                 Settings.BypassBrokenItemMods,
                 Settings.VendorInfluenced,
                 Settings.VendorAllRares,
-                Settings.StricterFiltering);
+                Settings.StricterFiltering,
+                Settings.Sell6Links);
             return true;
         }
 

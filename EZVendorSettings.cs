@@ -40,6 +40,9 @@ namespace EZVendor
         [Menu("Less garbage (enable after first week of league)")]
         public ToggleNode StricterFiltering { get; set; } = new ToggleNode(true);
         
+        [Menu("Sell all 6 links")]
+        public ToggleNode Sell6Links { get; set; } = new ToggleNode(false);
+        
         [Menu("Vendor all rares")]
         public ToggleNode VendorAllRares { get; set; } = new ToggleNode(false);
 

@@ -21,6 +21,7 @@ namespace EZVendor.Item
         private readonly bool _vendorInfluenced;
         private readonly bool _vendorAllRares;
         private readonly bool _lessGarbage;
+        private readonly bool _sell6Links;
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
@@ -29,7 +30,8 @@ namespace EZVendor.Item
             bool bypassBrokenItemMods,
             bool vendorInfluenced,
             bool vendorAllRares,
-            bool lessGarbage)
+            bool lessGarbage,
+            bool sell6Links)
         {
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
@@ -39,6 +41,7 @@ namespace EZVendor.Item
             _vendorInfluenced = vendorInfluenced;
             _vendorAllRares = vendorAllRares;
             _lessGarbage = lessGarbage;
+            _sell6Links = sell6Links;
         }
 
         public Actions Evaluate(NormalInventoryItem normalInventoryItem)
@@ -77,7 +80,7 @@ namespace EZVendor.Item
                     filters.Add(new VendorForScrolls(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps));
                     filters.Add(new VendorForAltsFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
-                    filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
+                    if (!_sell6Links) filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
                     filters.Add(new EnchantedHelmetFilter(_gameController, normalInventoryItem));
                     if (!_vendorAllRares) filters.Add(new RareRingFilter(_gameController, normalInventoryItem, _lessGarbage));
