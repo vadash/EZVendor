@@ -37,7 +37,7 @@ namespace EZVendor.Item.Ninja
                 @"https://poe.ninja/api/data/itemoverview?league=" + leagueName +
                 @"&type=UniqueAccessory&language=en"
             };
-            Task.Run(UpdateCheapUniques);
+            Task.Run(() => UpdateCheapUniques());
         }
 
         private void UpdateCheapUniques()
