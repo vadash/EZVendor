@@ -24,7 +24,6 @@ namespace EZVendor.Item.Filters
                 if (ItemBaseComponent.isHunter) n++;
                 if (ItemBaseComponent.isRedeemer) n++;
                 if (ItemBaseComponent.isShaper) n++;
-                if (ItemBaseComponent.isSynthesized) n++;
                 if (ItemBaseComponent.isWarlord) n++;
                 return n == 1 || n == 2
                     ? Actions.Keep
