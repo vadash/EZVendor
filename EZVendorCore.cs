@@ -35,23 +35,23 @@ namespace EZVendor
 
         public override bool Initialise()
         {
-            Input.RegisterKey(Settings.MainHotkey);
-            Input.RegisterKey(Settings.CopyStatsHotkey);
-            Input.RegisterKey(Settings.StopHotkey);
+            Input.RegisterKey(Settings.MainHotkey2);
+            Input.RegisterKey(Settings.CopyStatsHotkey2);
+            Input.RegisterKey(Settings.StopHotkey2);
             _ninja = new NinjaUniqueProvider(
-                Settings.ChaosUniqueCutoff,
+                Settings.ChaosUniqueCutoff2,
                 DirectoryFullName,
-                Settings.LeagueName3);
+                Settings.LeagueName4);
             _itemFactory = new ItemFactory(
                 GameController,
                 _ninja,
-                Settings.VendorTransmutes,
-                Settings.VendorScraps,
-                Settings.BypassBrokenItemMods,
-                Settings.VendorInfluenced,
-                Settings.VendorAllRares,
-                Settings.StricterFiltering,
-                Settings.Sell6Links);
+                Settings.VendorTransmutes2,
+                Settings.VendorScraps2,
+                Settings.BypassBrokenItemMods2,
+                Settings.VendorInfluenced2,
+                Settings.VendorAllRares2,
+                Settings.StricterFiltering2,
+                Settings.Sell6Links2);
             return true;
         }
 
@@ -78,7 +78,7 @@ namespace EZVendor
                        "it doesnt sell trash item then move this item to player inventory, \r\n" +
                        "mouse over it, press debug key and send me msg");
             ImGui.NewLine();
-            ImGui.InputText("League name", ref Settings.LeagueName3, 255);
+            ImGui.InputText("League name", ref Settings.LeagueName4, 255);
             base.DrawSettings();
             if (ImGui.Button("Delete ninja cache (after you change settings)"))
             {
@@ -112,7 +112,7 @@ namespace EZVendor
         {
             #region start main routine
 
-            if (Settings.MainHotkey.PressedOnce() &&
+            if (Settings.MainHotkey2.PressedOnce() &&
                 Core.ParallelRunner.FindByName(MainCoroutineName) == null)
             {
                 LogMessage("[EZV] started");
@@ -120,7 +120,7 @@ namespace EZVendor
                 StartMainCoroutine();
             }
 
-            if (Settings.StopHotkey.PressedOnce() &&
+            if (Settings.StopHotkey2.PressedOnce() &&
                 Core.ParallelRunner?.FindByName(MainCoroutineName)?.Done(true) == true)
             {
                 LogMessage("[EZV] aborted");
@@ -131,7 +131,7 @@ namespace EZVendor
 
             #region debug item mods
 
-            if (Settings.CopyStatsHotkey.PressedOnce())
+            if (Settings.CopyStatsHotkey2.PressedOnce())
             {
                 var invItem = GetInventoryItem(GameController.IngameState.UIHoverElement.Address);
                 var itemComponent = invItem.Item.GetComponent<Mods>();
@@ -208,20 +208,20 @@ namespace EZVendor
         {
             for (var iteration = 0; iteration < MaxIDTimes; iteration++)
             {
-                if (Settings.DebugLog) LogMessage("[EZV] OpenNPCTrade");
+                if (Settings.DebugLog2) LogMessage("[EZV] OpenNPCTrade");
                 yield return OpenNPCTrade();
-                if (Settings.DebugLog) LogMessage("[EZV] WaitForOpenInventory");
+                if (Settings.DebugLog2) LogMessage("[EZV] WaitForOpenInventory");
                 yield return WaitForOpenInventory();
-                if (Settings.DebugLog) LogMessage("[EZV] GetUnidentifiedItems");
+                if (Settings.DebugLog2) LogMessage("[EZV] GetUnidentifiedItems");
                 GetUnidentifiedItems(out var unidList);
-                if (Settings.DebugLog) LogMessage("[EZV] Unid");
+                if (Settings.DebugLog2) LogMessage("[EZV] Unid");
                 yield return DoUnid(unidList);
             }
             for (var iteration = 0; iteration < MaxVendorTimes; iteration++)
             {
-                if (Settings.DebugLog) LogMessage("[EZV] OpenNPCTrade");
+                if (Settings.DebugLog2) LogMessage("[EZV] OpenNPCTrade");
                 yield return OpenNPCTrade();
-                if (Settings.DebugLog) LogMessage("[EZV] WaitForOpenInventory");
+                if (Settings.DebugLog2) LogMessage("[EZV] WaitForOpenInventory");
                 yield return WaitForOpenInventory();
 
                 #region AnalyzeIdentifiedItems
@@ -230,7 +230,7 @@ namespace EZVendor
                 IDictionary<string, int> vendorBases;
                 try
                 {
-                    if (Settings.DebugLog) LogMessage("[EZV] AnalyzeIdentifiedItems");
+                    if (Settings.DebugLog2) LogMessage("[EZV] AnalyzeIdentifiedItems");
                     AnalyzeIdentifiedItems(out vendorList, out vendorBases);
                 }
                 catch (Exception e)
@@ -246,7 +246,7 @@ namespace EZVendor
                 var badVendorRecipes = false;
                 try
                 {
-                    if (Settings.DebugLog) LogMessage("[EZV] RemoveBadVendorRecipes");
+                    if (Settings.DebugLog2) LogMessage("[EZV] RemoveBadVendorRecipes");
                     badVendorRecipes = RemoveBadVendorRecipes(vendorList, vendorBases);
                 }
                 catch (Exception e)
@@ -256,11 +256,11 @@ namespace EZVendor
 
                 #endregion
                
-                if (Settings.DebugLog) LogMessage("[EZV] VendorGarbage");
+                if (Settings.DebugLog2) LogMessage("[EZV] VendorGarbage");
                 yield return DoVendorGarbage(vendorList);
-                if (Settings.DebugLog) LogMessage("[EZV] ClickSellWindowAcceptButton");
+                if (Settings.DebugLog2) LogMessage("[EZV] ClickSellWindowAcceptButton");
                 yield return ClickSellWindowAcceptButton();
-                if (Settings.DebugLog) LogMessage("[EZV] WaitForClosedInventory");
+                if (Settings.DebugLog2) LogMessage("[EZV] WaitForClosedInventory");
                 yield return WaitForClosedInventory();
                 if (!badVendorRecipes)
                 {
@@ -292,12 +292,12 @@ namespace EZVendor
             {
                 if (condition())
                 {
-                    if (Settings.DebugLog) LogMessage($"[EZV] Finished waiting for {condition.Method.Name}");
+                    if (Settings.DebugLog2) LogMessage($"[EZV] Finished waiting for {condition.Method.Name}");
                     yield return new WaitTime(100 + Latency);
                     yield break;
                 }
 
-                if (Settings.DebugLog) LogMessage($"[EZV] Waiting for {condition.Method.Name}");
+                if (Settings.DebugLog2) LogMessage($"[EZV] Waiting for {condition.Method.Name}");
                 yield return new WaitTime(waitTickRate);
             }
         }
@@ -529,12 +529,12 @@ namespace EZVendor
             {
                 Input.SetCursorPos(invItem.GetClientRect().ClickRandom());
                 Input.MouseMove();
-                yield return new WaitTime(Settings.Delay1AfterMouseMove);
+                yield return new WaitTime(Settings.Delay1AfterMouseMove2);
                 if (GameController.IngameState.UIHoverElement.Address > 0 &&
                     GameController.IngameState.UIHoverElement.Address == invItem.Address)
                 {
                     Input.Click(mouseButton);
-                    yield return new WaitTime(Settings.Delay2AfterClick);
+                    yield return new WaitTime(Settings.Delay2AfterClick2);
                     break;
                 }
             }
@@ -548,7 +548,7 @@ namespace EZVendor
         {
             if (IsInventoryOpened() && IsSellWindowOpened()) yield break;
             const string tanePath = @"Metadata/NPC/League/Metamorphosis/MetamorphosisNPCHideout";
-            if (!Settings.AutoOpenTrade) yield break;
+            if (!Settings.AutoOpenTrade2) yield break;
             var npc = GameController
                 ?.Game
                 ?.IngameState
@@ -582,12 +582,12 @@ namespace EZVendor
                 .IngameState
                 .IngameUi
                 .SellWindow;
-            var btn = Settings.AutoClickDebug
+            var btn = Settings.AutoClickDebug2
                 ? sellWindows.CancelButton
                 : sellWindows.AcceptButton;
             yield return Input.SetCursorPositionSmooth(btn.GetClientRectCache.ClickRandom());
             yield return new WaitTime(100 + Latency);
-            if (!Settings.AutoClickAcceptButton) yield break;
+            if (!Settings.AutoClickAcceptButton2) yield break;
             Input.Click(MouseButtons.Left);
             yield return new WaitTime(100 + Latency);
         }

@@ -7,59 +7,68 @@ namespace EZVendor
 {
     public class EZVendorSettings : ISettings
     {
-        [Menu("Chaos Unique Cutoff")]
-        public RangeNode<int> ChaosUniqueCutoff { get; set; } = new RangeNode<int>(10, 1, 30);
+        public ToggleNode Enable { get; set; } = new ToggleNode(false);
 
+        public string LeagueName4 = "Ultimatum";
+        
+        #region Main
+        
         [Menu("Sell garbage hotkey")] 
-        public HotkeyNode MainHotkey { get; set; } = new HotkeyNode(Keys.F3);
+        public HotkeyNode MainHotkey2 { get; set; } = new HotkeyNode(Keys.F3);        
+
+        [Menu("Chaos Unique Cutoff")]
+        public RangeNode<int> ChaosUniqueCutoff2 { get; set; } = new RangeNode<int>(10, 1, 30);
+
+        [Menu("Click TANE to trade")]
+        public ToggleNode AutoOpenTrade2 { get; set; } = new ToggleNode(true);
+
+        [Menu("Click sell window accept button")]
+        public ToggleNode AutoClickAcceptButton2 { get; set; } = new ToggleNode(true);
+
+        [Menu("Sell ALL influenced gear")]
+        public ToggleNode VendorInfluenced2 { get; set; } = new ToggleNode(true);
+
+        [Menu("Sell ALL 6 links")]
+        public ToggleNode Sell6Links2 { get; set; } = new ToggleNode(true);
+        
+        [Menu("Sell transmutes")]
+        public ToggleNode VendorTransmutes2 { get; set; } = new ToggleNode(true);
+
+        [Menu("Sell scraps/whetstones")]
+        public ToggleNode VendorScraps2 { get; set; } = new ToggleNode(true);
+
+        [Menu("Less garbage (enable after first week of league)")]
+        public ToggleNode StricterFiltering2 { get; set; } = new ToggleNode(true);
+
+        [Menu("Sell ALL rares")]
+        public ToggleNode VendorAllRares2 { get; set; } = new ToggleNode(true);
+        
+        #endregion
+
+        #region Other
 
         [Menu("Stop hotkey")] 
-        public HotkeyNode StopHotkey { get; set; } = new HotkeyNode(Keys.Escape);
+        public HotkeyNode StopHotkey2 { get; set; } = new HotkeyNode(Keys.Space);        
 
-        [Menu("Debug copy inventory item stats under cursor hotkey")]
-        public HotkeyNode CopyStatsHotkey { get; set; } = new HotkeyNode(Keys.NumPad7);
-
-        [Menu("Auto click TANE to trade (enable for auto sell)")]
-        public ToggleNode AutoOpenTrade { get; set; } = new ToggleNode(true);
-
-        [Menu("Auto click sell window accept button (enable for auto sell)")]
-        public ToggleNode AutoClickAcceptButton { get; set; } = new ToggleNode(true);
-        
-        [Menu("Vendor influenced gear (enable for auto sell)")]
-        public ToggleNode VendorInfluenced { get; set; } = new ToggleNode(true);
-
-        [Menu("Click cancel button instead (for debug)")]
-        public ToggleNode AutoClickDebug { get; set; } = new ToggleNode(false);
-
-        [Menu("Vendor transmutes")]
-        public ToggleNode VendorTransmutes { get; set; } = new ToggleNode(true);
-        
-        [Menu("Vendor scraps/whetstones")]
-        public ToggleNode VendorScraps { get; set; } = new ToggleNode(true);
-       
-        [Menu("Less garbage (enable after first week of league)")]
-        public ToggleNode StricterFiltering { get; set; } = new ToggleNode(true);
-        
-        [Menu("Sell all 6 links")]
-        public ToggleNode Sell6Links { get; set; } = new ToggleNode(false);
-        
-        [Menu("Vendor all rares")]
-        public ToggleNode VendorAllRares { get; set; } = new ToggleNode(false);
+        [Menu("Click cancel button instead (debug)")]
+        public ToggleNode AutoClickDebug2 { get; set; } = new ToggleNode(false);
 
         [Menu("Bypass broken ItemMods component (debug)")]
-        public ToggleNode BypassBrokenItemMods { get; set; } = new ToggleNode(false);
-        
-        [Menu("Extra log (for debug)")] 
-        public ToggleNode DebugLog { get; set; } = new ToggleNode(false);
+        public ToggleNode BypassBrokenItemMods2 { get; set; } = new ToggleNode(false);
 
-        public ToggleNode Enable { get; set; } = new ToggleNode(false);
+        [Menu("Extra log (debug)")] 
+        public ToggleNode DebugLog2 { get; set; } = new ToggleNode(false);
+
+        [Menu("Delay after mouse move, ms")]
+        public RangeNode<int> Delay1AfterMouseMove2 { get; set; } = new RangeNode<int>(40, 0, 100);
+
+        [Menu("Delay after click, ms")]
+        public RangeNode<int> Delay2AfterClick2 { get; set; } = new RangeNode<int>(40, 0, 100);
+
+        [Menu("Debug copy inventory item stats under cursor hotkey")]
+        public HotkeyNode CopyStatsHotkey2 { get; set; } = new HotkeyNode(Keys.NumPad7);
         
-        public string LeagueName3 = "Ultimatum";
-        
-        [Menu("Delay after mouse move")]
-        public RangeNode<int> Delay1AfterMouseMove { get; set; } = new RangeNode<int>(5, 0, 100);
-        
-        [Menu("Delay after click")]
-        public RangeNode<int> Delay2AfterClick { get; set; } = new RangeNode<int>(25, 0, 100);
+        #endregion
+       
     }
 }
