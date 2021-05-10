@@ -9,6 +9,7 @@ using ExileCore;
 using ExileCore.PoEMemory;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
+using ExileCore.PoEMemory.MemoryObjects;
 using ExileCore.Shared;
 using ExileCore.Shared.Enums;
 using ExileCore.Shared.Helpers;
@@ -20,6 +21,18 @@ using ImGuiNET;
 // ReSharper disable ConstantConditionalAccessQualifier
 namespace EZVendor
 {
+    internal class MyItem
+    {
+        internal long InitialInvItemItemAddress { get; }
+        internal NormalInventoryItem InvItem { get; }
+
+        public MyItem(NormalInventoryItem invItem)
+        {
+            InvItem = invItem;
+            InitialInvItemItemAddress = InvItem.Item.Address;
+        }
+    }
+    
     public class EZVendorCore : BaseSettingsPlugin<EZVendorSettings>
     {
         private const int MaxIDTimes = 3;
@@ -102,8 +115,6 @@ namespace EZVendor
                         PublishEvent("ezv_started", null);
                         StartMainCoroutine();
                     }
-                    break;
-                default:
                     break;
             }
         }
@@ -226,7 +237,7 @@ namespace EZVendor
 
                 #region AnalyzeIdentifiedItems
 
-                IList<Tuple<long, NormalInventoryItem>> vendorList;
+                IList<MyItem> vendorList;
                 IDictionary<string, int> vendorBases;
                 try
                 {
@@ -314,10 +325,10 @@ namespace EZVendor
         /// <param name="vendorList"></param>
         /// <param name="pathCount"></param>
         private void AnalyzeIdentifiedItems(
-            out IList<Tuple<long, NormalInventoryItem>> vendorList,
+            out IList<MyItem> vendorList,
             out IDictionary<string, int> pathCount)
         {
-            vendorList = new List<Tuple<long, NormalInventoryItem>>();
+            vendorList = new List<MyItem>();
             pathCount = new Dictionary<string, int>();
             try
             {
@@ -330,7 +341,7 @@ namespace EZVendor
                             !invItem.Item.HasComponent<Base>() ||
                             _itemFactory.Evaluate(invItem) == Actions.Vendor)
                         {
-                            vendorList.Add(new Tuple<long, NormalInventoryItem>(invItem.Address, invItem));
+                            vendorList.Add(new MyItem(invItem));
                             var key = invItem.Item.Path;
                             if (pathCount.ContainsKey(key))
                                 pathCount[key]++;
@@ -341,7 +352,7 @@ namespace EZVendor
                     catch (Exception)
                     {
                         LogMessage($"[EZV] Found krangled item. Selling", 30);
-                        vendorList.Add(new Tuple<long, NormalInventoryItem>(invItem.Address, invItem));
+                        vendorList.Add(new MyItem(invItem));
                     }
                 }
             }
@@ -352,7 +363,7 @@ namespace EZVendor
         }
 
         private void GetUnidentifiedItems(
-            out IList<Tuple<long, NormalInventoryItem>> unidList)
+            out IList<MyItem> unidList)
         {
             try
             {
@@ -367,13 +378,13 @@ namespace EZVendor
                     where !sixSockets || sixLinks // skip 6S
                     let mapComponent = item.HasComponent<Map>()
                     where !mapComponent // skip maps
-                    select new Tuple<long, NormalInventoryItem>(invItem.Address, invItem);
+                    select new MyItem(invItem);
                 
                 unidList = query.ToList();
             }
             catch (Exception)
             {
-                unidList = new List<Tuple<long, NormalInventoryItem>>();
+                unidList = new List<MyItem>();
             }
         }
 
@@ -384,7 +395,7 @@ namespace EZVendor
         /// <param name="basesCount"></param>
         /// <returns>true - removed something</returns>
         private static bool RemoveBadVendorRecipes(
-            IList<Tuple<long, NormalInventoryItem>> vendorList,
+            IList<MyItem> vendorList,
             IDictionary<string, int> basesCount)
         {
             var removedSomething = false;
@@ -400,11 +411,11 @@ namespace EZVendor
             for (var i = 0; i < 10; i++)
             {
                 var count = 0;
-                var r1 = vendorList.Count(tuple => tuple.Item2.Item.Path == TwoStoneBase1);
+                var r1 = vendorList.Count(myItem => myItem.InvItem.Item.Path == TwoStoneBase1);
                 if (r1 > 0) count++;
-                var r2 = vendorList.Count(tuple => tuple.Item2.Item.Path == TwoStoneBase2);
+                var r2 = vendorList.Count(myItem => myItem.InvItem.Item.Path == TwoStoneBase2);
                 if (r2 > 0) count++;
-                var r3 = vendorList.Count(tuple => tuple.Item2.Item.Path == TwoStoneBase3);
+                var r3 = vendorList.Count(myItem => myItem.InvItem.Item.Path == TwoStoneBase3);
                 if (r3 > 0) count++;
                 if (count == 3)
                 {
@@ -416,13 +427,13 @@ namespace EZVendor
             }
             
             // transmute + 2 amulets
-            if (vendorList.Count(tuple => tuple.Item2.Item.Path.Contains("Amulets")) >= 2)
+            if (vendorList.Count(myItem => myItem.InvItem.Item.Path.Contains("Amulets")) >= 2)
             {
                 removedSomething |= Remove(vendorList, @"Metadata/Items/Currency/CurrencyUpgradeToMagic");
             }
             
             // weapon + whetstone
-            if (vendorList.Count(tuple => tuple.Item2.Item.Path.Contains("Weapons")) >= 1)
+            if (vendorList.Count(myItem => myItem.InvItem.Item.Path.Contains("Weapons")) >= 1)
             {
                 removedSomething |= Remove(vendorList, @"Metadata/Items/Currency/CurrencyWeaponQuality");
             }
@@ -431,7 +442,7 @@ namespace EZVendor
         }
 
         private static bool Remove(
-            IList<Tuple<long, NormalInventoryItem>> list,
+            IList<MyItem> list,
             string key,
             int n = int.MaxValue)
         {
@@ -439,7 +450,7 @@ namespace EZVendor
             var removed = 0;
             for (var i = list.Count - 1; i >= 0; i--)
             {
-                if (list[i].Item2.Item.Path == key)
+                if (list[i].InvItem.Item.Path == key)
                 {
                     list.RemoveAt(i);
                     removed++;
@@ -457,14 +468,14 @@ namespace EZVendor
         /// </summary>
         /// <param name="itemList"></param>
         /// <returns></returns>
-        private IEnumerator DoVendorGarbage(IList<Tuple<long, NormalInventoryItem>> itemList)
+        private IEnumerator DoVendorGarbage(IList<MyItem> itemList)
         {
             LogMessage($"[EZV] Want to sell {itemList.Count} items");
             if (itemList.Count == 0) yield break;
             yield return ClickAll(itemList, 4, Keys.ControlKey, MouseButtons.Left);
         }
 
-        private IEnumerator DoUnid(IList<Tuple<long, NormalInventoryItem>> itemList)
+        private IEnumerator DoUnid(IList<MyItem> itemList)
         {
             LogMessage($"[EZV] Want to unid {itemList.Count} items");
             if (itemList.Count == 0) yield break;
@@ -488,7 +499,7 @@ namespace EZVendor
         /// <param name="mouseButton"></param>
         /// <returns></returns>
         private IEnumerator ClickAll(
-            IList<Tuple<long, NormalInventoryItem>> itemList,
+            IList<MyItem> itemList,
             int iterations,
             Keys keyToHold,
             MouseButtons mouseButton)
@@ -500,12 +511,14 @@ namespace EZVendor
                 for (var i = itemList.Count - 1; i >= 0; i--)
                 {
                     if (!IsInventoryOpened() || !IsSellWindowOpened()) break;
-                    var (initialAddress, invItem) = itemList[i];
-                    if (invItem.Item == null ||
+                    var invItem = itemList[i].InvItem;
+                    if (invItem.Item.ComponentList == 0 ||
+                        invItem.Item.Rarity == MonsterRarity.Error ||
+                        invItem.Item.HasComponent<Base>() == false ||
+                        invItem.Item == null ||
                         invItem.Address == 0 ||
                         invItem.Item.Address == 0 ||
-                        invItem.Item.Address != initialAddress && invItem.Address != initialAddress ||
-                        GetInventoryItem(initialAddress) == null)
+                        GetServerItem(itemList[i].InitialInvItemItemAddress) == null)
                     {
                         itemList.RemoveAt(i);
                         continue;
@@ -628,6 +641,21 @@ namespace EZVendor
                 .IngameUi
                 .InventoryPanel[InventoryIndex.PlayerInventory]
                 .VisibleInventoryItems;
+        }
+        
+        private Entity GetServerItem(long address)
+        {
+            return GetServerItems()?.FirstOrDefault(item => item?.Address == address);
+        }
+        
+        private IEnumerable<Entity> GetServerItems()
+        {
+            return GameController
+                .IngameState
+                .ServerData
+                .PlayerInventories[0]
+                .Inventory
+                .Items;
         }
     }
 }
