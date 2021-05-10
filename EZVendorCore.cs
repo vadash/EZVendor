@@ -504,6 +504,7 @@ namespace EZVendor
                     if (invItem.Item == null ||
                         invItem.Address == 0 ||
                         invItem.Item.Address == 0 ||
+                        invItem.Item.Address != initialAddress && invItem.Address != initialAddress ||
                         GetInventoryItem(initialAddress) == null)
                     {
                         itemList.RemoveAt(i);
