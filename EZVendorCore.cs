@@ -541,6 +541,7 @@ namespace EZVendor
         {
             for (var j = 0; j < 20; j++) // timeout = 20 x DelayAfterMouseMove
             {
+                if (!invItem.GetClientRectCache.Intersects(GetPlayerInventory().GetClientRectCache)) yield break;
                 Input.SetCursorPos(invItem.GetClientRect().ClickRandom());
                 Input.MouseMove();
                 yield return new WaitTime(Settings.Delay1AfterMouseMove2);
@@ -634,15 +635,10 @@ namespace EZVendor
             return GetInventoryItems()?.FirstOrDefault(item => item?.Item?.Path?.Contains(path) == true);
         }
         
-        private IEnumerable<NormalInventoryItem> GetInventoryItems()
-        {
-            return GameController
-                .IngameState
-                .IngameUi
-                .InventoryPanel[InventoryIndex.PlayerInventory]
-                .VisibleInventoryItems;
-        }
-        
+        private Inventory GetPlayerInventory() => GameController.IngameState.IngameUi.InventoryPanel[InventoryIndex.PlayerInventory];
+
+        private IEnumerable<NormalInventoryItem> GetInventoryItems() => GetPlayerInventory().VisibleInventoryItems;
+
         private Entity GetServerItem(long address)
         {
             return GetServerItems()?.FirstOrDefault(item => item?.Address == address);
