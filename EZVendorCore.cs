@@ -165,7 +165,7 @@ namespace EZVendor
                     foreach (var itemMod in itemComponent.ItemMods)
                         stats += "name: [" + itemMod.Name + "] " +
                                  "group: [" + itemMod.Group + "] " +
-                                 "values: " + itemMod.Values[0] + " " + itemMod.Values[1] +
+                                 "values: " + itemMod.Value1 + " " + itemMod.Value2 +
                                  Environment.NewLine;
                 }
                 catch (Exception e)
