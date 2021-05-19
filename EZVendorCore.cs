@@ -35,8 +35,8 @@ namespace EZVendor
     
     public class EZVendorCore : BaseSettingsPlugin<EZVendorSettings>
     {
-        private const int MaxIDTimes = 3;
-        private const int MaxVendorTimes = 4;
+        private const int MaxIDTimes = 2;
+        private const int MaxVendorTimes = 3;
         private const int MaxSameBases = 4;
         private const string MainCoroutineName = "EZV_Main";
         private const string TwoStoneBase1 = @"Metadata/Items/Rings/Ring12";
@@ -111,7 +111,6 @@ namespace EZVendor
             switch (eventId)
             {
                 case "start_ezv":
-                    LogMessage("[EZV] started");
                     StartMainCoroutine();
                     break;
             }
@@ -123,7 +122,6 @@ namespace EZVendor
 
             if (Settings.MainHotkey2.PressedOnce())
             {
-                LogMessage("[EZV] started");
                 StartMainCoroutine();
             }
 
@@ -209,6 +207,7 @@ namespace EZVendor
         private void StartMainCoroutine()
         {
             if (Core.ParallelRunner.FindByName(MainCoroutineName) != null) return;
+            LogMessage("[EZV] started");
             Core.ParallelRunner?.Run(new Coroutine(MainRoutine(), this, MainCoroutineName));
             PublishEvent("ezv_started", null);
         }
@@ -566,11 +565,10 @@ namespace EZVendor
         private IEnumerator ClickItem(Element invItem, MouseButtons mouseButton)
         {
             LogMessage($"[EZV] ClickItem ", 30);
-            for (var j = 0; j < 20; j++) // timeout = 20 x DelayAfterMouseMove
+            for (var j = 0; j < 10; j++) // timeout = 10 x DelayAfterMouseMove
             {
                 if (!invItem.GetClientRectCache.Intersects(GetPlayerInventory().GetClientRectCache)) yield break;
-                Input.SetCursorPos(invItem.GetClientRect().ClickRandom());
-                Input.MouseMove();
+                yield return Input.SetCursorPositionSmooth(invItem.GetClientRect().ClickRandom());
                 yield return new WaitTime(Settings.Delay1AfterMouseMove2);
                 if (GameController.IngameState.UIHoverElement.Address > 0 &&
                     GameController.IngameState.UIHoverElement.Address == invItem.Address)
@@ -607,7 +605,6 @@ namespace EZVendor
 
             Input.KeyDown(Keys.LControlKey);
             yield return Input.SetCursorPositionSmooth(npc.Label.GetClientRectCache.ClickRandom());
-            Input.MouseMove();
             yield return new WaitTime(100 + Latency);
             Input.Click(MouseButtons.Left);
             yield return new WaitTime(100 + Latency);
