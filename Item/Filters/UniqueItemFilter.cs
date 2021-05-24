@@ -39,9 +39,9 @@ namespace EZVendor.Item.Filters
 
         private static bool IsSameName(string s1, string s2)
         {
-            var rgx = new Regex("[^a-zA-Z0-9]");
-            s1 = rgx.Replace(s1, "").ToLower();
-            s2 = rgx.Replace(s2, "").ToLower();
+            var rgx = new Regex("[^a-z]");
+            s1 = rgx.Replace(s1.ToLower(), "");
+            s2 = rgx.Replace(s2.ToLower(), "");
             return s1 == s2;
         }
     }
