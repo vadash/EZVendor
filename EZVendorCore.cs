@@ -54,7 +54,8 @@ namespace EZVendor
             Input.RegisterKey(Settings.CopyStatsHotkey2);
             Input.RegisterKey(Settings.StopHotkey2);
             _ninja = new NinjaUniqueProvider(
-                Settings.ChaosUniqueCutoff2,
+                Settings.Unique0LChaosCutoff,
+                Settings.Unique6LChaosCutoff,
                 DirectoryFullName,
                 Settings.LeagueName4);
             _itemFactory = new ItemFactory(
@@ -66,7 +67,7 @@ namespace EZVendor
                 Settings.VendorInfluenced2,
                 Settings.VendorAllRares2,
                 Settings.StricterFiltering2,
-                Settings.Sell6Links2);
+                Settings.SellNonUnique6Links);
             return true;
         }
 

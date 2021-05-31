@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -12,18 +11,24 @@ namespace EZVendor.Item.Ninja
 {
     internal class NinjaUniqueProvider : INinjaProvider
     {
-        private readonly string _dbName;
         private readonly List<string> _ninjaUniquesUrls;
-        private readonly int _uniquePriceChaosCutoff;
-        private HashSet<string> _cheapUniques;
+        private readonly string _db0LName;
+        private readonly string _db6LName;
+        private readonly int _unique0LChaosCutoff;
+        private readonly int _unique6LChaosCutoff;
+        private HashSet<string> _cheap0LUniques;
+        private HashSet<string> _cheap6LUniques;
 
         public NinjaUniqueProvider(
-            int uniquePriceChaosCutoff,
+            int unique0LChaosCutoff,
+            int unique6LChaosCutoff,
             string directoryFullName,
             string leagueName)
         {
-            _uniquePriceChaosCutoff = uniquePriceChaosCutoff;
-            _dbName = Path.Combine(directoryFullName, "ninja.json");
+            _unique0LChaosCutoff = unique0LChaosCutoff;
+            _unique6LChaosCutoff = unique6LChaosCutoff;
+            _db0LName = Path.Combine(directoryFullName, "ninja0L.json");
+            _db6LName = Path.Combine(directoryFullName, "ninja6L.json");
             _ninjaUniquesUrls = new List<string>
             {
                 @"https://poe.ninja/api/data/itemoverview?league=" + leagueName +
@@ -42,22 +47,26 @@ namespace EZVendor.Item.Ninja
 
         private void UpdateCheapUniques()
         {
-            _cheapUniques = LoadDataFromFile(out var databaseAgeHours);
-            if (databaseAgeHours <= 24) return;
-            if (!GetDataOnline(out var data)) return;
-            _cheapUniques = data;
-            SaveData(data);
+            _cheap0LUniques = LoadDataFromFile(_db0LName, out var age1);
+            _cheap6LUniques = LoadDataFromFile(_db6LName, out var age2);
+            if (age1 <= 24 && age2 <= 24) return;
+            if (!GetDataOnline(out var data0L, false, _unique0LChaosCutoff)) return;
+            if (!GetDataOnline(out var data6L, true, _unique6LChaosCutoff)) return;
+            _cheap0LUniques = data0L;
+            _cheap6LUniques = data6L;
+            SaveData(data0L, _db0LName);
+            SaveData(data6L, _db6LName);
         }
 
-        private HashSet<string> LoadDataFromFile(out double databaseAgeHours)
+        private HashSet<string> LoadDataFromFile(string dbName, out double databaseAgeHours)
         {
             try
             {
-                if (File.Exists(_dbName))
+                if (File.Exists(_db0LName))
                 {
-                    var dif = DateTime.Now - File.GetLastWriteTime(_dbName);
+                    var dif = DateTime.Now - File.GetLastWriteTime(_db0LName);
                     databaseAgeHours = dif.TotalHours;
-                    var json = File.ReadAllText(_dbName);
+                    var json = File.ReadAllText(dbName);
                     return JsonConvert.DeserializeObject<HashSet<string>>(json);
                 }
             }
@@ -70,7 +79,7 @@ namespace EZVendor.Item.Ninja
             return new HashSet<string>();
         }
 
-        private bool GetDataOnline(out HashSet<string> onlineData)
+        private bool GetDataOnline(out HashSet<string> onlineData, bool only6L, int cutoff)
         {
             onlineData = new HashSet<string>();
             try
@@ -84,12 +93,10 @@ namespace EZVendor.Item.Ninja
                         if (jToken == null) return false;
                         foreach (var token in jToken)
                         {
-                            if (int.TryParse((string) token?["links"], out var links) &&
-                                links >= 5)
-                                continue;
+                            if (only6L && (!int.TryParse((string) token?["links"], out var links) || links < 6)) continue;
                             var chaosValueStr = ((string) token?["chaosValue"])?.Split('.')[0];
                             if (double.TryParse(chaosValueStr, out var chaosValue) &&
-                                chaosValue < _uniquePriceChaosCutoff)
+                                chaosValue <= cutoff)
                                 result.Add((string) token?["name"]);
                         }
                     }
@@ -103,12 +110,12 @@ namespace EZVendor.Item.Ninja
             }
         }
 
-        private void SaveData(HashSet<string> data)
+        private static void SaveData(HashSet<string> data, string filename)
         {
             try
             {
                 var json = JsonConvert.SerializeObject(data);
-                File.WriteAllText(_dbName, json);
+                File.WriteAllText(filename, json);
             }
             catch (Exception)
             {
@@ -116,9 +123,8 @@ namespace EZVendor.Item.Ninja
             }
         }
 
-        public HashSet<string> GetCheapUniques()
-        {
-            return _cheapUniques;
-        }
+        public IEnumerable<string> GetCheap0LUniques() => _cheap0LUniques;
+
+        public IEnumerable<string> GetCheap6LUniques() => _cheap6LUniques;
     }
 }

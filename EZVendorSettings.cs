@@ -16,9 +16,15 @@ namespace EZVendor
         [Menu("Sell garbage hotkey")] 
         public HotkeyNode MainHotkey2 { get; set; } = new HotkeyNode(Keys.F3);        
 
-        [Menu("Chaos Unique Cutoff")]
-        public RangeNode<int> ChaosUniqueCutoff2 { get; set; } = new RangeNode<int>(10, 1, 30);
+        [Menu("Chaos not 6L Unique Cutoff")]
+        public RangeNode<int> Unique0LChaosCutoff { get; set; } = new RangeNode<int>(10, 5, 30);
+        
+        [Menu("Chaos 6L Unique Cutoff")]
+        public RangeNode<int> Unique6LChaosCutoff { get; set; } = new RangeNode<int>(30, 20, 50);
 
+        [Menu("Sell ALL non unique 6 links")]
+        public ToggleNode SellNonUnique6Links { get; set; } = new ToggleNode(true);
+        
         [Menu("Click TANE to trade")]
         public ToggleNode AutoOpenTrade2 { get; set; } = new ToggleNode(true);
 
@@ -27,10 +33,7 @@ namespace EZVendor
 
         [Menu("Sell ALL influenced gear")]
         public ToggleNode VendorInfluenced2 { get; set; } = new ToggleNode(true);
-
-        [Menu("Sell ALL 6 links")]
-        public ToggleNode Sell6Links2 { get; set; } = new ToggleNode(true);
-        
+       
         [Menu("Sell transmutes")]
         public ToggleNode VendorTransmutes2 { get; set; } = new ToggleNode(true);
 

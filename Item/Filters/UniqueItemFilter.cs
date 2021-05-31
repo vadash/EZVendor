@@ -26,7 +26,7 @@ namespace EZVendor.Item.Filters
             {
                 if (ItemModsComponent.UniqueName.Length <= 4) return Actions.Vendor;
                 if (ItemModsComponent.UniqueName == @"Hotfooted") return Actions.Vendor; // Hotheaded
-                var garbage = _ninjaProvider.GetCheapUniques();
+                var garbage = _ninjaProvider.GetCheap0LUniques();
                 return garbage.Any(name => IsSameName(name, ItemModsComponent.UniqueName))
                     ? Actions.Vendor
                     : Actions.CantDecide;

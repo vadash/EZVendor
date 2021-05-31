@@ -4,6 +4,7 @@ namespace EZVendor.Item.Ninja
 {
     internal interface INinjaProvider
     {
-        HashSet<string> GetCheapUniques();
+        IEnumerable<string> GetCheap0LUniques();
+        IEnumerable<string> GetCheap6LUniques();
     }
 }
