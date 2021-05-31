@@ -2,6 +2,7 @@
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
+using ExileCore.Shared.Enums;
 
 namespace EZVendor.Item.Filters
 {
@@ -18,8 +19,8 @@ namespace EZVendor.Item.Filters
         {
             try
             {
+                if (ItemModsComponent.ItemRarity == ItemRarity.Unique) return Actions.CantDecide;
                 if (!Item.HasComponent<Sockets>()) return Actions.CantDecide;
-                if (ItemModsComponent.UniqueName.Contains("Tabula Rasa")) return Actions.Vendor;
                 return Item.GetComponent<Sockets>().LargestLinkSize == 6
                     ? Actions.Keep
                     : Actions.CantDecide;
