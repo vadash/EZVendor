@@ -99,6 +99,8 @@ namespace EZVendor
             if (ImGui.Button("Delete ninja cache (after you change settings)"))
             {
                 File.Delete(Path.Combine(DirectoryFullName, "ninja.json"));
+                File.Delete(Path.Combine(DirectoryFullName, "ninja0L.json"));
+                File.Delete(Path.Combine(DirectoryFullName, "ninja6L.json"));
             }
         }
 
