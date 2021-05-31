@@ -84,8 +84,7 @@ namespace EZVendor
             ImGui.BulletText("Other rares: vendor for alts");
             ImGui.Text("Avoid selling 5 to 1 recipe, prismatic ring recipe");
             ImGui.BulletText("Uniques: ninja sell cheap");
-            ImGui.BulletText("Enchants: keep 10c+ (hard coded list)");
-            ImGui.BulletText("6L: keep (except Tabula), 6S: vendor");
+            ImGui.BulletText("6L: keep expensive uniques, 6S: vendor");
             ImGui.BulletText("Transmutes: vendor");
             ImGui.NewLine();
             ImGui.Text("This plugin will sort 95 percent of rare garbage");
