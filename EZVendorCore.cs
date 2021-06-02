@@ -654,7 +654,7 @@ namespace EZVendor
         private NormalInventoryItem GetInventoryItem(string path) => 
             GetInventoryItems()
                 ?.FirstOrDefault(item =>
-                    item?.Item?.Path?.Contains(path) == true);
+                    item?.Item?.Path == path);
 
         private Inventory GetPlayerInventory() => 
             GameController
