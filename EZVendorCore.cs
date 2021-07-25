@@ -57,7 +57,7 @@ namespace EZVendor
                 Settings.Unique0LChaosCutoff,
                 Settings.Unique6LChaosCutoff,
                 DirectoryFullName,
-                Settings.LeagueName4);
+                Settings.LeagueNameExpedition);
             _itemFactory = new ItemFactory(
                 GameController,
                 _ninja,
@@ -93,7 +93,7 @@ namespace EZVendor
                        "it doesnt sell trash item then move this item to player inventory, \r\n" +
                        "mouse over it, press debug key and send me msg");
             ImGui.NewLine();
-            ImGui.InputText("League name", ref Settings.LeagueName4, 255);
+            ImGui.InputText("League name", ref Settings.LeagueNameExpedition, 255);
             base.DrawSettings();
             if (ImGui.Button("Delete ninja cache (after you change settings)"))
             {
@@ -645,13 +645,6 @@ namespace EZVendor
                 ?.IngameUi
                 ?.SellWindow
                 ?.IsVisible == true ||
-            GameController
-                ?.IngameState
-                ?.IngameUi
-                ?.TradeWindow
-                ?.IsVisible == true;
-        
-        private bool IsTradeWindowOpened() =>
             GameController
                 ?.IngameState
                 ?.IngameUi
