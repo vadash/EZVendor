@@ -644,6 +644,18 @@ namespace EZVendor
                 ?.IngameState
                 ?.IngameUi
                 ?.SellWindow
+                ?.IsVisible == true ||
+            GameController
+                ?.IngameState
+                ?.IngameUi
+                ?.TradeWindow
+                ?.IsVisible == true;
+        
+        private bool IsTradeWindowOpened() =>
+            GameController
+                ?.IngameState
+                ?.IngameUi
+                ?.TradeWindow
                 ?.IsVisible == true;
 
         private NormalInventoryItem GetInventoryItem(long address) => 
