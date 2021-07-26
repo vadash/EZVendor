@@ -33,17 +33,17 @@ namespace EZVendor.Item.Filters
             if (_vendorTransmutes &&
                 Item.HasComponent<Stack>() &&
                 Item.GetComponent<Stack>().Size <= 15 && // dont vendor full stack transmutes
-                new Random().NextDouble() < 0.6 &&
+                new Random().NextDouble() < 0.75 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyUpgradeToMagic")
                 return Actions.Vendor;
                 
             if (_vendorScraps &&
-                new Random().NextDouble() < 0.85 &&
+                new Random().NextDouble() < 0.9 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyArmourQuality")
                 return Actions.Vendor;
             
             if (_vendorScraps &&
-                new Random().NextDouble() < 0.85 &&
+                new Random().NextDouble() < 0.9 &&
                 Item.Path == @"Metadata/Items/Currency/CurrencyWeaponQuality")
                 return Actions.Vendor;
             
