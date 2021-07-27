@@ -30,6 +30,7 @@ namespace EZVendor.Item.Filters
                 if (ItemModsComponent.ItemRarity != ItemRarity.Unique) return Actions.CantDecide;
                 if (ItemModsComponent.UniqueName.Length <= 4) return Actions.Vendor;
                 if (ItemModsComponent.UniqueName == @"Hotfooted") return Actions.Vendor; // Hotheaded
+                if (ItemModsComponent.UniqueName == @"Ondar's Flight") return Actions.Vendor; // Victario's Flight
                 var garbage = Item?.GetComponent<Sockets>()?.LargestLinkSize == 6
                     ? _ninjaProvider.GetCheap6LUniques()
                     : _ninjaProvider.GetCheap0LUniques();
