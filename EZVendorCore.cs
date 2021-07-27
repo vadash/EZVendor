@@ -67,7 +67,8 @@ namespace EZVendor
                 Settings.VendorInfluenced2,
                 Settings.VendorAllRares2,
                 Settings.StricterFiltering2,
-                Settings.SellNonUnique6Links);
+                Settings.SellNonUnique6Links,
+                Settings.SaveVeiledHelmets);
             return true;
         }
 

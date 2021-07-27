@@ -22,6 +22,7 @@ namespace EZVendor.Item
         private readonly bool _vendorAllRares;
         private readonly bool _lessGarbage;
         private readonly bool _sell6Links;
+        private readonly bool _saveVeiledHelmets;
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
@@ -31,7 +32,8 @@ namespace EZVendor.Item
             bool vendorInfluenced,
             bool vendorAllRares,
             bool lessGarbage,
-            bool sell6Links)
+            bool sell6Links,
+            bool saveVeiledHelmets)
         {
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
@@ -42,6 +44,7 @@ namespace EZVendor.Item
             _vendorAllRares = vendorAllRares;
             _lessGarbage = lessGarbage;
             _sell6Links = sell6Links;
+            _saveVeiledHelmets = saveVeiledHelmets;
         }
 
         public Actions Evaluate(NormalInventoryItem normalInventoryItem)
@@ -91,6 +94,7 @@ namespace EZVendor.Item
                     if (!_vendorAllRares) filters.Add(new RareJewel(_gameController, normalInventoryItem, _lessGarbage));
                     if (!_vendorAllRares) filters.Add(new RareAbyssJewel(_gameController, normalInventoryItem, _lessGarbage));
                     if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, _lessGarbage));
+                    if (_saveVeiledHelmets) filters.Add(new VeiledHelmet(_gameController, normalInventoryItem));
                     filters.Add(new UniqueItemFilter(_gameController, normalInventoryItem, _ninjaProvider));
                 }
                 else

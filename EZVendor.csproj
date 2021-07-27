@@ -79,6 +79,7 @@
     <Compile Include="Item\Filters\SixLinkFilter.cs" />
     <Compile Include="Item\Filters\SixSocketFilter.cs" />
     <Compile Include="Item\Filters\UniqueItemFilter.cs" />
+    <Compile Include="Item\Filters\VeiledHelmet.cs" />
     <Compile Include="Item\Filters\VendorForAltsFilter.cs" />
     <Compile Include="Item\Filters\VendorForScrolls.cs" />
     <Compile Include="Item\Ninja\INinjaProvider.cs" />

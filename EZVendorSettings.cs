@@ -46,6 +46,9 @@ namespace EZVendor
         [Menu("Sell ALL rares")]
         public ToggleNode VendorAllRares2 { get; set; } = new ToggleNode(true);
         
+        [Menu("Save veiled helmets (+1 zombie craft)")]
+        public ToggleNode SaveVeiledHelmets { get; set; } = new ToggleNode(false);
+        
         #endregion
 
         #region Other
