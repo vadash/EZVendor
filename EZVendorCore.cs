@@ -44,7 +44,7 @@ namespace EZVendor
         private const string TwoStoneBase3 = @"Metadata/Items/Rings/Ring14";
         private IItemFactory _itemFactory;
         private INinjaProvider _ninja;
-        private int Latency => (int) (GameController?.IngameState?.CurLatency ?? 50);
+        private int Latency => GameController?.IngameState?.ServerData?.Latency ?? 50;
 
         public override bool Initialise()
         {
