@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -118,8 +119,60 @@ namespace EZVendor
             }
         }
 
+        #region Tracking item under cursor
+
+        private readonly Stopwatch _cursorStuckWithGarbageTimer = new Stopwatch();
+
+        private bool IsCursorWithItem()
+        {
+            if (GameController?.Game?.IsPreGame == true) return false;
+            try
+            {
+                var playerInventories = GameController
+                    ?.Game
+                    ?.IngameState
+                    ?.ServerData
+                    ?.PlayerInventories;
+                var cursorItems =
+                    (from playerInventory in playerInventories
+                        select playerInventory?.Inventory
+                        into inventory
+                        where inventory?.InventType == InventoryTypeE.Cursor
+                        select inventory)
+                    .FirstOrDefault();
+                if (cursorItems?.Items?.Count != 1) return false;
+                var cursorItem = cursorItems?.Items?[0];
+                return !string.IsNullOrEmpty(cursorItem?.Path);
+            }
+            catch (Exception e) // ok
+            {
+                return false;
+            }
+        }
+
+        private void UpdateCursorStuckWithGarbageTimer()
+        {
+            if (IsCursorWithItem())
+                _cursorStuckWithGarbageTimer.Start();
+            else if (_cursorStuckWithGarbageTimer.IsRunning) 
+                _cursorStuckWithGarbageTimer.Reset();
+        }
+
+        #endregion
+        
         public override Job Tick()
         {
+            #region Stop if we have stuck item under cursor
+
+            UpdateCursorStuckWithGarbageTimer();
+            if (_cursorStuckWithGarbageTimer.ElapsedMilliseconds > 5000)
+            {
+                Core.ParallelRunner?.FindByName(MainCoroutineName)?.Done(true);
+                return null;
+            }
+
+            #endregion
+            
             #region start main routine
 
             if (Settings.MainHotkey2.PressedOnce())
