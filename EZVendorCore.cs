@@ -168,7 +168,17 @@ namespace EZVendor
                 {
                     LogMessage(e.StackTrace, 20);
                 }
-
+                
+                try
+                {
+                    if (itemComponent.ItemRarity == ItemRarity.Unique)
+                        stats += $"$Unique internal name: {itemComponent?.UniqueName} " + Environment.NewLine;
+                }
+                catch (Exception e)
+                {
+                    LogMessage(e.StackTrace, 20);
+                }
+                
                 stats += "Human mods (this one is often broken in PoeHUD): " + Environment.NewLine;
                 try
                 {
