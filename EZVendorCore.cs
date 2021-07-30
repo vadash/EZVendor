@@ -172,7 +172,7 @@ namespace EZVendor
                 try
                 {
                     if (itemComponent.ItemRarity == ItemRarity.Unique)
-                        stats += $"$Unique internal name: {itemComponent?.UniqueName} " + Environment.NewLine;
+                        stats += $"Internal name: {itemComponent?.UniqueName} " + Environment.NewLine;
                 }
                 catch (Exception e)
                 {
