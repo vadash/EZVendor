@@ -56,9 +56,9 @@ namespace EZVendor.Item.Ninja
             _cheap0LUniques = data0L;
             _cheap6LUniques = data6L;
             SaveData(data0L, _db0LName);
-            DebugWindow.LogMsg($"[EZV] Loaded {data0L} shit < 6L uniques");
+            DebugWindow.LogMsg($"[EZV] Loaded {data0L} shit < 6L uniques. Cutoff {_unique0LChaosCutoff}");
             SaveData(data6L, _db6LName);
-            DebugWindow.LogMsg($"[EZV] Loaded {data6L} shit 6L uniques");
+            DebugWindow.LogMsg($"[EZV] Loaded {data6L} shit 6L uniques. Cutoff {_unique6LChaosCutoff}");
         }
 
         private HashSet<string> LoadDataFromFile(string dbName, out double databaseAgeHours)
