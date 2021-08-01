@@ -17,10 +17,10 @@ namespace EZVendor
         public HotkeyNode MainHotkey2 { get; set; } = new HotkeyNode(Keys.F3);        
 
         [Menu("Chaos not 6L Unique Cutoff")]
-        public RangeNode<int> Unique0LChaosCutoff { get; set; } = new RangeNode<int>(10, 5, 30);
+        public RangeNode<int> Unique0LChaosCutoff2 { get; set; } = new RangeNode<int>(5, 5, 30);
         
         [Menu("Chaos 6L Unique Cutoff")]
-        public RangeNode<int> Unique6LChaosCutoff { get; set; } = new RangeNode<int>(30, 20, 50);
+        public RangeNode<int> Unique6LChaosCutoff2 { get; set; } = new RangeNode<int>(20, 20, 50);
 
         [Menu("Sell ALL non unique 6 links")]
         public ToggleNode SellNonUnique6Links { get; set; } = new ToggleNode(true);

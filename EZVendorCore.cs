@@ -55,8 +55,8 @@ namespace EZVendor
             Input.RegisterKey(Settings.CopyStatsHotkey2);
             Input.RegisterKey(Settings.StopHotkey2);
             _ninja = new NinjaUniqueProvider(
-                Settings.Unique0LChaosCutoff,
-                Settings.Unique6LChaosCutoff,
+                Settings.Unique0LChaosCutoff2,
+                Settings.Unique6LChaosCutoff2,
                 DirectoryFullName,
                 Settings.LeagueNameExpedition);
             _itemFactory = new ItemFactory(
