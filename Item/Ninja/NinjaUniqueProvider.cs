@@ -21,7 +21,6 @@ namespace EZVendor.Item.Ninja
         private HashSet<string> _cheap6LUniques;
 
         public NinjaUniqueProvider(
-            GameController gameController,
             int unique0LChaosCutoff,
             int unique6LChaosCutoff,
             string directoryFullName,
