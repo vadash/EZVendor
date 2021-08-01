@@ -19,7 +19,8 @@ namespace EZVendor.Item.Filters
             try
             {
                 if (!Item.HasComponent<Sockets>()) return Actions.CantDecide;
-                return Item.GetComponent<Sockets>().NumberOfSockets == 6
+                return Item.GetComponent<Sockets>().NumberOfSockets == 6 &&
+                       Item.GetComponent<Sockets>().LargestLinkSize < 6
                     ? Actions.Vendor
                     : Actions.CantDecide;
             }

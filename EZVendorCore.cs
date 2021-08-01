@@ -144,7 +144,7 @@ namespace EZVendor
                 var cursorItem = cursorItems?.Items?[0];
                 return !string.IsNullOrEmpty(cursorItem?.Path);
             }
-            catch (Exception e) // ok
+            catch (Exception) // ok
             {
                 return false;
             }
