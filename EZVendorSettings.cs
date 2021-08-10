@@ -40,14 +40,14 @@ namespace EZVendor
         [Menu("Sell scraps/whetstones")]
         public ToggleNode VendorScraps2 { get; set; } = new ToggleNode(true);
 
-        [Menu("Less garbage (enable after first week of league)")]
-        public ToggleNode StricterFiltering2 { get; set; } = new ToggleNode(true);
-
         [Menu("Sell ALL rares")]
         public ToggleNode VendorAllRares2 { get; set; } = new ToggleNode(true);
         
-        [Menu("Save veiled helmets (+1 zombie craft)")]
+        [Menu("Save veiled helmets (+1 skele craft)")]
         public ToggleNode SaveVeiledHelmets { get; set; } = new ToggleNode(false);
+        
+        [Menu("Save top enchanted helmets")]
+        public ToggleNode SaveEnchantedHelmets { get; set; } = new ToggleNode(false);
         
         #endregion
 

@@ -20,9 +20,9 @@ namespace EZVendor.Item
         private readonly bool _bypassBrokenItemMods;
         private readonly bool _vendorInfluenced;
         private readonly bool _vendorAllRares;
-        private readonly bool _lessGarbage;
         private readonly bool _sell6Links;
         private readonly bool _saveVeiledHelmets;
+        private readonly bool _settingsSaveEnchantedHelmets;
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
@@ -31,9 +31,9 @@ namespace EZVendor.Item
             bool bypassBrokenItemMods,
             bool vendorInfluenced,
             bool vendorAllRares,
-            bool lessGarbage,
             bool sell6Links,
-            bool saveVeiledHelmets)
+            bool saveVeiledHelmets, 
+            bool settingsSaveEnchantedHelmets)
         {
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
@@ -42,9 +42,9 @@ namespace EZVendor.Item
             _bypassBrokenItemMods = bypassBrokenItemMods;
             _vendorInfluenced = vendorInfluenced;
             _vendorAllRares = vendorAllRares;
-            _lessGarbage = lessGarbage;
             _sell6Links = sell6Links;
             _saveVeiledHelmets = saveVeiledHelmets;
+            _settingsSaveEnchantedHelmets = settingsSaveEnchantedHelmets;
         }
 
         public Actions Evaluate(NormalInventoryItem normalInventoryItem)
@@ -85,15 +85,15 @@ namespace EZVendor.Item
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
                     if (!_sell6Links) filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
-                    filters.Add(new EnchantedHelmetFilter(_gameController, normalInventoryItem));
-                    if (!_vendorAllRares) filters.Add(new RareRingFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareAmuletFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareBeltFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareGlovesFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareBootsFilter(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareJewel(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareAbyssJewel(_gameController, normalInventoryItem, _lessGarbage));
-                    if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, _lessGarbage));
+                    if (_settingsSaveEnchantedHelmets) filters.Add(new EnchantedHelmetFilter(_gameController, normalInventoryItem));
+                    if (!_vendorAllRares) filters.Add(new RareRingFilter(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareAmuletFilter(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareBeltFilter(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareGlovesFilter(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareBootsFilter(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareJewel(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareAbyssJewel(_gameController, normalInventoryItem, true));
+                    if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, true));
                     if (_saveVeiledHelmets) filters.Add(new VeiledHelmet(_gameController, normalInventoryItem));
                     filters.Add(new UniqueItemFilter(_gameController, normalInventoryItem, _ninjaProvider));
                 }
