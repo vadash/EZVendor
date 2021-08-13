@@ -21,9 +21,6 @@ namespace EZVendor
         
         [Menu("Chaos 6L Unique Cutoff")]
         public RangeNode<int> Unique6LChaosCutoff2 { get; set; } = new RangeNode<int>(20, 20, 50);
-
-        [Menu("Sell ALL non unique 6 links")]
-        public ToggleNode SellNonUnique6Links { get; set; } = new ToggleNode(true);
         
         [Menu("Click TANE to trade")]
         public ToggleNode AutoOpenTrade2 { get; set; } = new ToggleNode(true);

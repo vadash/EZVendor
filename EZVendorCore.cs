@@ -67,7 +67,6 @@ namespace EZVendor
                 Settings.BypassBrokenItemMods2,
                 Settings.VendorInfluenced2,
                 Settings.VendorAllRares2,
-                Settings.SellNonUnique6Links,
                 Settings.SaveVeiledHelmets,
                 Settings.SaveEnchantedHelmets
                 );

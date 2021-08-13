@@ -20,7 +20,6 @@ namespace EZVendor.Item
         private readonly bool _bypassBrokenItemMods;
         private readonly bool _vendorInfluenced;
         private readonly bool _vendorAllRares;
-        private readonly bool _sell6Links;
         private readonly bool _saveVeiledHelmets;
         private readonly bool _settingsSaveEnchantedHelmets;
 
@@ -31,7 +30,6 @@ namespace EZVendor.Item
             bool bypassBrokenItemMods,
             bool vendorInfluenced,
             bool vendorAllRares,
-            bool sell6Links,
             bool saveVeiledHelmets, 
             bool settingsSaveEnchantedHelmets)
         {
@@ -42,7 +40,6 @@ namespace EZVendor.Item
             _bypassBrokenItemMods = bypassBrokenItemMods;
             _vendorInfluenced = vendorInfluenced;
             _vendorAllRares = vendorAllRares;
-            _sell6Links = sell6Links;
             _saveVeiledHelmets = saveVeiledHelmets;
             _settingsSaveEnchantedHelmets = settingsSaveEnchantedHelmets;
         }
@@ -83,7 +80,7 @@ namespace EZVendor.Item
                     filters.Add(new VendorForScrolls(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps));
                     filters.Add(new VendorForAltsFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
-                    if (!_sell6Links) filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
+                    filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
                     if (_settingsSaveEnchantedHelmets) filters.Add(new EnchantedHelmetFilter(_gameController, normalInventoryItem));
                     if (!_vendorAllRares) filters.Add(new RareRingFilter(_gameController, normalInventoryItem, true));

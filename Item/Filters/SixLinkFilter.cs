@@ -19,10 +19,10 @@ namespace EZVendor.Item.Filters
         {
             try
             {
-                if (ItemModsComponent.ItemRarity == ItemRarity.Unique) return Actions.CantDecide;
-                if (!Item.HasComponent<Sockets>()) return Actions.CantDecide;
+                if (!Item.HasComponent<Sockets>()) return Actions.CantDecide; // skip no sockets items
+                if (ItemModsComponent.ItemRarity == ItemRarity.Unique) return Actions.CantDecide; // unique will be priced by other filter
                 return Item.GetComponent<Sockets>().LargestLinkSize == 6
-                    ? Actions.Keep
+                    ? Actions.Vendor
                     : Actions.CantDecide;
             }
             catch (Exception)
