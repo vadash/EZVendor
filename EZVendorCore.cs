@@ -62,7 +62,7 @@ namespace EZVendor
             _itemFactory = new ItemFactory(
                 GameController,
                 _ninja,
-                Settings.VendorTransmutes2,
+                Settings.VendorTransmutes3,
                 Settings.VendorScraps2,
                 Settings.BypassBrokenItemMods2,
                 Settings.VendorInfluenced2,

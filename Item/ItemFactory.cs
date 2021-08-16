@@ -93,6 +93,7 @@ namespace EZVendor.Item
                     if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, true));
                     if (_saveVeiledHelmets) filters.Add(new VeiledHelmet(_gameController, normalInventoryItem));
                     filters.Add(new UniqueItemFilter(_gameController, normalInventoryItem, _ninjaProvider));
+                    filters.Add(new VendorMagicFilter(_gameController, normalInventoryItem));
                 }
                 else
                     filters = new List<IEvaluate>

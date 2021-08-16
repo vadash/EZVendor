@@ -32,7 +32,7 @@ namespace EZVendor
         public ToggleNode VendorInfluenced2 { get; set; } = new ToggleNode(true);
        
         [Menu("Sell transmutes")]
-        public ToggleNode VendorTransmutes2 { get; set; } = new ToggleNode(true);
+        public ToggleNode VendorTransmutes3 { get; set; } = new ToggleNode(false);
 
         [Menu("Sell scraps/whetstones")]
         public ToggleNode VendorScraps2 { get; set; } = new ToggleNode(true);
