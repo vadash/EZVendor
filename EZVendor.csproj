@@ -65,7 +65,7 @@
     <Compile Include="Item\Filters\EnchantedHelmetFilter.cs" />
     <Compile Include="Item\Filters\IEvaluate.cs" />
     <Compile Include="Item\Filters\InfluencedFilter.cs" />
-    <Compile Include="Item\Filters\VendorMagicFilter.cs" />
+    <Compile Include="Item\Filters\VendorForAlts2Filter.cs" />
     <Compile Include="Item\Filters\MapFilter.cs" />
     <Compile Include="Item\Filters\AbstractRareItem.cs" />
     <Compile Include="Item\Filters\PathFilter.cs" />

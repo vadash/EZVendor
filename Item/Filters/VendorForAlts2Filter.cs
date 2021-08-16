@@ -9,9 +9,9 @@ namespace EZVendor.Item.Filters
     /// <summary>
     /// Run last
     /// </summary>
-    internal class VendorMagicFilter : AbstractRareItem
+    internal class VendorForAlts2Filter : AbstractRareItem
     {
-        public VendorMagicFilter(GameController gameController,
+        public VendorForAlts2Filter(GameController gameController,
             NormalInventoryItem normalInventoryItem)
             : base(gameController, normalInventoryItem)
         {

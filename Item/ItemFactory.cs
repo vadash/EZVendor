@@ -78,7 +78,6 @@ namespace EZVendor.Item
                     if (!_vendorInfluenced) filters.Add(new InfluencedFilter(_gameController, normalInventoryItem));
                     filters.Add(new PathFilter(_gameController, normalInventoryItem));
                     filters.Add(new VendorForScrolls(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps));
-                    filters.Add(new VendorForAltsFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
@@ -93,7 +92,8 @@ namespace EZVendor.Item
                     if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, true));
                     if (_saveVeiledHelmets) filters.Add(new VeiledHelmet(_gameController, normalInventoryItem));
                     filters.Add(new UniqueItemFilter(_gameController, normalInventoryItem, _ninjaProvider));
-                    filters.Add(new VendorMagicFilter(_gameController, normalInventoryItem));
+                    filters.Add(new VendorForAltsFilter(_gameController, normalInventoryItem));
+                    filters.Add(new VendorForAlts2Filter(_gameController, normalInventoryItem));
                 }
                 else
                     filters = new List<IEvaluate>
