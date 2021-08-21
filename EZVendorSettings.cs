@@ -31,15 +31,6 @@ namespace EZVendor
         [Menu("Sell ALL influenced gear")]
         public ToggleNode VendorInfluenced2 { get; set; } = new ToggleNode(true);
        
-        [Menu("Sell transmutes")]
-        public ToggleNode VendorTransmutes3 { get; set; } = new ToggleNode(false);
-
-        [Menu("Sell scraps/whetstones")]
-        public ToggleNode VendorScraps2 { get; set; } = new ToggleNode(true);
-
-        [Menu("Sell ALL rares")]
-        public ToggleNode VendorAllRares2 { get; set; } = new ToggleNode(true);
-        
         [Menu("Save veiled helmets (+1 skele craft)")]
         public ToggleNode SaveVeiledHelmets { get; set; } = new ToggleNode(false);
         

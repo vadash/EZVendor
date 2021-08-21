@@ -10,11 +10,11 @@ using EZVendor.Item.Ninja;
 
 namespace EZVendor.Item.Filters
 {
-    internal class UniqueItemFilter : AbstractBasicItem
+    internal class UniqueFilter : AbstractBasicItem
     {
         private readonly INinjaProvider _ninjaProvider;
 
-        public UniqueItemFilter(
+        public UniqueFilter(
             GameController gameController,
             NormalInventoryItem normalInventoryItem,
             INinjaProvider ninjaProvider)

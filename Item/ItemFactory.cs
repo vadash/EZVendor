@@ -17,22 +17,16 @@ namespace EZVendor.Item
         private readonly GameController _gameController;
         private readonly INinjaProvider _ninjaProvider;
         private readonly IDivCardsProvider _divCardsProvider;
-        private readonly bool _vendorTransmutes;
-        private readonly bool _vendorScraps;
         private readonly bool _bypassBrokenItemMods;
         private readonly bool _vendorInfluenced;
-        private readonly bool _vendorAllRares;
         private readonly bool _saveVeiledHelmets;
         private readonly bool _settingsSaveEnchantedHelmets;
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
             IDivCardsProvider divCardsProvider,
-            bool vendorTransmutes,
-            bool vendorScraps,
             bool bypassBrokenItemMods,
             bool vendorInfluenced,
-            bool vendorAllRares,
             bool saveVeiledHelmets,
             bool settingsSaveEnchantedHelmets
             )
@@ -40,11 +34,8 @@ namespace EZVendor.Item
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
             _divCardsProvider = divCardsProvider;
-            _vendorTransmutes = vendorTransmutes;
-            _vendorScraps = vendorScraps;
             _bypassBrokenItemMods = bypassBrokenItemMods;
             _vendorInfluenced = vendorInfluenced;
-            _vendorAllRares = vendorAllRares;
             _saveVeiledHelmets = saveVeiledHelmets;
             _settingsSaveEnchantedHelmets = settingsSaveEnchantedHelmets;
         }
@@ -87,31 +78,18 @@ namespace EZVendor.Item
                 if (item.HasComponent<Mods>())
                 {
                     filters = new List<IEvaluate>();
-                    if (!_vendorInfluenced) filters.Add(new InfluencedFilter(_gameController, normalInventoryItem));
+                    if (!_vendorInfluenced) filters.Add(new InfluenceFilter(_gameController, normalInventoryItem));
                     filters.Add(new PathFilter(_gameController, normalInventoryItem));
-                    filters.Add(new VendorForScrolls(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
-                    if (_settingsSaveEnchantedHelmets) filters.Add(new EnchantedHelmetFilter(_gameController, normalInventoryItem));
-                    if (!_vendorAllRares) filters.Add(new RareRingFilter(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareAmuletFilter(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareBeltFilter(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareGlovesFilter(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareBootsFilter(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareJewel(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareAbyssJewel(_gameController, normalInventoryItem, true));
-                    if (!_vendorAllRares) filters.Add(new RareOneHanded(_gameController, normalInventoryItem, true));
-                    if (_saveVeiledHelmets) filters.Add(new VeiledHelmet(_gameController, normalInventoryItem));
-                    filters.Add(new UniqueItemFilter(_gameController, normalInventoryItem, _ninjaProvider));
-                    filters.Add(new VendorForAltsFilter(_gameController, normalInventoryItem));
-                    filters.Add(new VendorForAlts2Filter(_gameController, normalInventoryItem));
+                    if (_settingsSaveEnchantedHelmets) filters.Add(new EnchantedFilter(_gameController, normalInventoryItem));
+                    if (_saveVeiledHelmets) filters.Add(new VeiledFilter(_gameController, normalInventoryItem));
+                    filters.Add(new UniqueFilter(_gameController, normalInventoryItem, _ninjaProvider));
+                    filters.Add(new ItemBaseFilter(_gameController, normalInventoryItem));
                 }
                 else
-                    filters = new List<IEvaluate>
-                    {
-                        new VendorForScrolls(_gameController, normalInventoryItem, _vendorTransmutes, _vendorScraps),
-                    };
+                    return Actions.Keep;
 
                 #region decide vendor/Keep
 

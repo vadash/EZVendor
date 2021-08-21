@@ -81,8 +81,8 @@ namespace EZVendor.Item.DivCards
             foreach (var line in fileContent)
             {
                 if (line.StartsWith(@"Show")) isShow = true;
-                if (line.StartsWith(@"Hide")) isHide = true;
-                if (line.Contains(@"BaseType =="))
+                else if (line.StartsWith(@"Hide")) isHide = true;
+                else if (line.Contains(@"BaseType =="))
                 {
                     var div = line.Replace(@"BaseType == ", "");
                     var divs = div.Split(new[] { "\" \"" }, StringSplitOptions.None);

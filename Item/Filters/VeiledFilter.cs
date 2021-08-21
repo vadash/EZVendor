@@ -3,9 +3,9 @@ using ExileCore.PoEMemory.Elements.InventoryElements;
 
 namespace EZVendor.Item.Filters
 {
-    internal class VeiledHelmet : AbstractRareItem
+    internal class VeiledFilter : AbstractBasicItem
     {
-        public VeiledHelmet(
+        public VeiledFilter(
             GameController gameController,
             NormalInventoryItem normalInventoryItem) 
             : base(gameController,normalInventoryItem)

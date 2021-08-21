@@ -6,7 +6,7 @@ using ExileCore.PoEMemory.Elements.InventoryElements;
 
 namespace EZVendor.Item.Filters
 {
-    internal class EnchantedHelmetFilter : AbstractBasicItem
+    internal class EnchantedFilter : AbstractBasicItem
     {
         private readonly IList<string> _goodEnchantsAnyBase = new List<string>
         {
@@ -35,7 +35,7 @@ namespace EZVendor.Item.Filters
             "Enchantment Blade Blast Area of Effect 2"
         };
 
-        public EnchantedHelmetFilter(
+        public EnchantedFilter(
             GameController gameController,
             NormalInventoryItem normalInventoryItem)
             : base(gameController, normalInventoryItem)

@@ -64,28 +64,17 @@
     <Compile Include="Item\DivCards\IDivCardsProvider.cs" />
     <Compile Include="Item\DivCards\LocalDivCardsProvider.cs" />
     <Compile Include="Item\Filters\AbstractBasicItem.cs" />
-    <Compile Include="Item\Filters\EnchantedHelmetFilter.cs" />
+    <Compile Include="Item\Filters\EnchantedFilter.cs" />
     <Compile Include="Item\Filters\IEvaluate.cs" />
-    <Compile Include="Item\Filters\InfluencedFilter.cs" />
+    <Compile Include="Item\Filters\InfluenceFilter.cs" />
     <Compile Include="Item\Filters\DivCardsFilter.cs" />
-    <Compile Include="Item\Filters\VendorForAlts2Filter.cs" />
     <Compile Include="Item\Filters\MapFilter.cs" />
-    <Compile Include="Item\Filters\AbstractRareItem.cs" />
     <Compile Include="Item\Filters\PathFilter.cs" />
-    <Compile Include="Item\Filters\RareAbyssJewel.cs" />
-    <Compile Include="Item\Filters\RareAmuletFilter.cs" />
-    <Compile Include="Item\Filters\RareBeltFilter.cs" />
-    <Compile Include="Item\Filters\RareBootsFilter.cs" />
-    <Compile Include="Item\Filters\RareGlovesFilter.cs" />
-    <Compile Include="Item\Filters\RareJewel.cs" />
-    <Compile Include="Item\Filters\RareOneHanded.cs" />
-    <Compile Include="Item\Filters\RareRingFilter.cs" />
     <Compile Include="Item\Filters\SixLinkFilter.cs" />
     <Compile Include="Item\Filters\SixSocketFilter.cs" />
-    <Compile Include="Item\Filters\UniqueItemFilter.cs" />
-    <Compile Include="Item\Filters\VeiledHelmet.cs" />
-    <Compile Include="Item\Filters\VendorForAltsFilter.cs" />
-    <Compile Include="Item\Filters\VendorForScrolls.cs" />
+    <Compile Include="Item\Filters\UniqueFilter.cs" />
+    <Compile Include="Item\Filters\VeiledFilter.cs" />
+    <Compile Include="Item\Filters\ItemBaseFilter.cs" />
     <Compile Include="Item\Ninja\INinjaProvider.cs" />
     <Compile Include="Item\Ninja\NinjaUniqueProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,7 +89,4 @@
     <Target Name="AfterBuild">
     </Target>
     -->
-  <PropertyGroup>
-    <PostBuildEvent>if /I "$(ConfigurationName)" == "Release" Eazfuscator.NET.exe "$(TargetPath)" --msbuild-project-path "$(ProjectPath)" --msbuild-project-configuration "$(ConfigurationName)" --msbuild-project-platform "$(PlatformName)" --msbuild-solution-path "$(SolutionPath)" -n --newline-flush -v 2020.4</PostBuildEvent>
-  </PropertyGroup>
 </Project>

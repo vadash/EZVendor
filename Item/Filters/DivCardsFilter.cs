@@ -26,7 +26,7 @@ namespace EZVendor.Item.Filters
             {
                 if (BaseItemType.ClassName != "DivinationCard") return Actions.CantDecide;
                 var garbage = _divCardsProvider.GetSellDivCardsList();
-                return garbage.Any(name => IsSameName(name, ItemModsComponent.UniqueName))
+                return garbage.Any(name => IsSameName(name, ItemBaseComponent.Name))
                     ? Actions.Vendor
                     : Actions.Keep;
             }

@@ -4,9 +4,9 @@ using ExileCore.PoEMemory.Elements.InventoryElements;
 
 namespace EZVendor.Item.Filters
 {
-    internal class InfluencedFilter : AbstractBasicItem
+    internal class InfluenceFilter : AbstractBasicItem
     {
-        public InfluencedFilter(
+        public InfluenceFilter(
             GameController gameController,
             NormalInventoryItem normalInventoryItem)
             : base(gameController, normalInventoryItem)

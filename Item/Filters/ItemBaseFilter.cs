@@ -5,9 +5,12 @@ using ExileCore.Shared.Enums;
 
 namespace EZVendor.Item.Filters
 {
-    internal class VendorForAltsFilter : AbstractRareItem
+    /// <summary>
+    /// Run last
+    /// </summary>
+    internal class ItemBaseFilter : AbstractBasicItem
     {
-        public VendorForAltsFilter(
+        public ItemBaseFilter(
             GameController gameController,
             NormalInventoryItem normalInventoryItem)
             : base(gameController, normalInventoryItem)
@@ -18,7 +21,8 @@ namespace EZVendor.Item.Filters
         {
             try
             {
-                if (ItemRarity == ItemRarity.Magic ||
+                if (ItemRarity == ItemRarity.Normal ||
+                    ItemRarity == ItemRarity.Magic ||
                     ItemRarity == ItemRarity.Rare)
                     switch (BaseItemType.ClassName)
                     {

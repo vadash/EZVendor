@@ -69,11 +69,8 @@ namespace EZVendor
                 GameController,
                 _ninja,
                 _divCardsProvider,
-                Settings.VendorTransmutes3,
-                Settings.VendorScraps2,
                 Settings.BypassBrokenItemMods2,
                 Settings.VendorInfluenced2,
-                Settings.VendorAllRares2,
                 Settings.SaveVeiledHelmets,
                 Settings.SaveEnchantedHelmets
                 );
@@ -85,28 +82,9 @@ namespace EZVendor
             try
             {
                 ImGui.Text($"Welcome to EZV {Assembly.GetExecutingAssembly().GetName().Version}");
-                ImGui.Text("Clicks Tane -> unid -> vendor");
-                ImGui.BulletText("Influenced: keep all (use game filter)");
-                ImGui.BulletText("Rare rings, amulets, belts, gloves, boots: smart check");
-                ImGui.Text("Veiled +1 weight, no defense -1 weight, no speed boots -1 weight");
-                ImGui.BulletText("1h: keep +1 gems, temple DD mod");
-                ImGui.BulletText("Abyss jewels: keep all T2+ Life / T2+ ES");
-                ImGui.BulletText("Jewels: keep all Life% / ES% (corrupt for -1% reserved)");
-                ImGui.BulletText("Other rares: vendor for alts");
-                ImGui.Text("Avoid selling 5 to 1 recipe, prismatic ring recipe");
-                ImGui.BulletText("Uniques: ninja sell cheap");
-                ImGui.BulletText("6L: keep expensive uniques, 6S: vendor");
-                ImGui.BulletText("Transmutes: vendor");
-                ImGui.NewLine();
-                ImGui.Text("This plugin will sort 95 percent of rare garbage");
-                ImGui.Text("Use tiered pricing tabs to auto price and sell rest. Example 1exa -> 50c -> 25c -> vendor");
-                ImGui.Text("If non influenced item dropped and plugin tries to vendor it or \r\n" +
-                           "it doesnt sell trash item then move this item to player inventory, \r\n" +
-                           "mouse over it, press debug key and send me msg");
-                ImGui.NewLine();
                 ImGui.InputText("League name", ref Settings.LeagueNameExpedition, 255);
                 base.DrawSettings();
-                ImGui.InputText("Limited username", ref Settings.LimitedUsername, 255);
+                ImGui.InputText("Poe username", ref Settings.LimitedUsername, 255);
                 ImGui.InputText("Filter name", ref Settings.FilterName, 255);
                 if (ImGui.Button("Delete ninja cache (after you change settings)"))
                 {
