@@ -61,10 +61,13 @@
   <ItemGroup>
     <Compile Include="EZVendorCore.cs" />
     <Compile Include="EZVendorSettings.cs" />
+    <Compile Include="Item\DivCards\IDivCardsProvider.cs" />
+    <Compile Include="Item\DivCards\LocalDivCardsProvider.cs" />
     <Compile Include="Item\Filters\AbstractBasicItem.cs" />
     <Compile Include="Item\Filters\EnchantedHelmetFilter.cs" />
     <Compile Include="Item\Filters\IEvaluate.cs" />
     <Compile Include="Item\Filters\InfluencedFilter.cs" />
+    <Compile Include="Item\Filters\DivCardsFilter.cs" />
     <Compile Include="Item\Filters\VendorForAlts2Filter.cs" />
     <Compile Include="Item\Filters\MapFilter.cs" />
     <Compile Include="Item\Filters\AbstractRareItem.cs" />

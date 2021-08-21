@@ -4,9 +4,10 @@ using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
 using ExileCore.Shared.Enums;
-using ExileCore.Shared.Nodes;
+using EZVendor.Item.DivCards;
 using EZVendor.Item.Filters;
 using EZVendor.Item.Ninja;
+
 // ReSharper disable ConstantConditionalAccessQualifier
 
 namespace EZVendor.Item
@@ -15,6 +16,7 @@ namespace EZVendor.Item
     {
         private readonly GameController _gameController;
         private readonly INinjaProvider _ninjaProvider;
+        private readonly IDivCardsProvider _divCardsProvider;
         private readonly bool _vendorTransmutes;
         private readonly bool _vendorScraps;
         private readonly bool _bypassBrokenItemMods;
@@ -25,16 +27,19 @@ namespace EZVendor.Item
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
+            IDivCardsProvider divCardsProvider,
             bool vendorTransmutes,
             bool vendorScraps,
             bool bypassBrokenItemMods,
             bool vendorInfluenced,
             bool vendorAllRares,
-            bool saveVeiledHelmets, 
-            bool settingsSaveEnchantedHelmets)
+            bool saveVeiledHelmets,
+            bool settingsSaveEnchantedHelmets
+            )
         {
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
+            _divCardsProvider = divCardsProvider;
             _vendorTransmutes = vendorTransmutes;
             _vendorScraps = vendorScraps;
             _bypassBrokenItemMods = bypassBrokenItemMods;
@@ -58,7 +63,14 @@ namespace EZVendor.Item
                     return Actions.Keep;
                 
                 #endregion
-                
+
+                #region div cards
+
+                if (item.Path.StartsWith(@"Metadata/Items/DivinationCards/DivinationCard"))
+                    return new DivCardsFilter(_gameController, normalInventoryItem, _divCardsProvider).Evaluate();                
+
+                #endregion
+
                 #region vendor rares with broken ItemMods
               
                 if (item.GetComponent<Mods>()?.ItemMods == null)

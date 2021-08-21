@@ -72,6 +72,13 @@ namespace EZVendor
         public HotkeyNode CopyStatsHotkey2 { get; set; } = new HotkeyNode(Keys.NumPad7);
         
         #endregion
-       
+
+        #region Div cards
+        
+        public string LimitedUsername = "liza";
+        
+        public string FilterName = "Blight";
+
+        #endregion
     }
 }
