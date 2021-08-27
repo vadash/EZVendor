@@ -65,6 +65,7 @@
     <Compile Include="Item\DivCards\LocalDivCardsProvider.cs" />
     <Compile Include="Item\Filters\AbstractBasicItem.cs" />
     <Compile Include="Item\Filters\EnchantedFilter.cs" />
+    <Compile Include="Item\Filters\FlaskFilter.cs" />
     <Compile Include="Item\Filters\IEvaluate.cs" />
     <Compile Include="Item\Filters\InfluenceFilter.cs" />
     <Compile Include="Item\Filters\DivCardsFilter.cs" />

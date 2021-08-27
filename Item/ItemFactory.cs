@@ -79,6 +79,7 @@ namespace EZVendor.Item
                 {
                     filters = new List<IEvaluate>();
                     if (!_vendorInfluenced) filters.Add(new InfluenceFilter(_gameController, normalInventoryItem));
+                    filters.Add(new FlaskFilter(_gameController, normalInventoryItem));
                     filters.Add(new PathFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
