@@ -60,7 +60,7 @@ namespace EZVendor
                 Settings.Unique0LChaosCutoff2,
                 Settings.Unique6LChaosCutoff2,
                 DirectoryFullName,
-                Settings.LeagueNameExpedition);
+                Settings.LeagueNameScourge);
             _divCardsProvider = new LocalDivCardsProvider(
                 Settings.LimitedUsername,
                 Settings.FilterName
@@ -82,7 +82,7 @@ namespace EZVendor
             try
             {
                 ImGui.Text($"Welcome to EZV {Assembly.GetExecutingAssembly().GetName().Version}");
-                ImGui.InputText("League name", ref Settings.LeagueNameExpedition, 255);
+                ImGui.InputText("League name", ref Settings.LeagueNameScourge, 255);
                 base.DrawSettings();
                 ImGui.InputText("Poe username", ref Settings.LimitedUsername, 255);
                 ImGui.InputText("Filter name", ref Settings.FilterName, 255);
@@ -393,8 +393,7 @@ namespace EZVendor
                 {
                     try
                     {
-                        if (invItem.Item.ComponentList == 0 ||
-                            invItem.Item.Rarity == MonsterRarity.Error ||
+                        if (invItem.Item.Rarity == MonsterRarity.Error ||
                             !invItem.Item.HasComponent<Base>() ||
                             _itemFactory.Evaluate(invItem) == Actions.Vendor)
                         {

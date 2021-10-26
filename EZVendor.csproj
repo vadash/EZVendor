@@ -38,6 +38,9 @@
       <HintPath>..\..\..\..\PoEHelper\ExileCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="GameOffsets, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\PoEHelper\GameOffsets.dll</HintPath>
+    </Reference>
     <Reference Include="ImGui.NET, Version=1.71.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\..\..\..\PoEHelper\ImGui.NET.dll</HintPath>
       <Private>False</Private>

@@ -9,7 +9,7 @@ namespace EZVendor
     {
         public ToggleNode Enable { get; set; } = new ToggleNode(false);
 
-        public string LeagueNameExpedition = "Expedition";
+        public string LeagueNameScourge = "Scourge";
         
         #region Main
         
