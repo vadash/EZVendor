@@ -48,6 +48,7 @@ namespace EZVendor
         private INinjaProvider _ninja;
         private IDivCardsProvider _divCardsProvider;
         private int Latency => GameController?.IngameState?.ServerData?.Latency ?? 50;
+        private bool _needLeagueNameUpdate = false;
 
         public override bool Initialise()
         {
@@ -60,7 +61,7 @@ namespace EZVendor
                 Settings.Unique0LChaosCutoff2,
                 Settings.Unique6LChaosCutoff2,
                 DirectoryFullName,
-                Settings.LeagueNameScourge);
+                Settings.LeagueNameArchnemesis);
             _divCardsProvider = new LocalDivCardsProvider(
                 Settings.LimitedUsername,
                 Settings.FilterName
@@ -82,7 +83,7 @@ namespace EZVendor
             try
             {
                 ImGui.Text($"Welcome to EZV {Assembly.GetExecutingAssembly().GetName().Version}");
-                ImGui.InputText("League name", ref Settings.LeagueNameScourge, 255);
+                ImGui.InputText("League name", ref Settings.LeagueNameArchnemesis, 255);
                 base.DrawSettings();
                 ImGui.InputText("Poe username", ref Settings.LimitedUsername, 255);
                 ImGui.InputText("Filter name", ref Settings.FilterName, 255);
@@ -159,6 +160,20 @@ namespace EZVendor
         
         public override Job Tick()
         {
+            #region Update league name
+
+            if (_needLeagueNameUpdate)
+            {
+                var leagueName = GameController?.IngameState?.ServerData?.League;
+                if (leagueName?.Length is >= 4 and <= 64)
+                {
+                    _needLeagueNameUpdate = false;
+                    Settings.LeagueNameArchnemesis = leagueName;
+                }
+            }            
+
+            #endregion
+            
             #region Stop if we have stuck item under cursor
 
             UpdateCursorStuckWithGarbageTimer();
