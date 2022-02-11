@@ -83,6 +83,30 @@ namespace EZVendor
             try
             {
                 ImGui.Text($"Welcome to EZV {Assembly.GetExecutingAssembly().GetName().Version}");
+
+                try
+                {
+                    var cheapDivCards = _divCardsProvider?.GetSellDivCardsList()?.Count;
+                    var zeroLinks = _ninja?.GetCheap0LUniques()?.Count(); 
+                    var sixLinks = _ninja?.GetCheap6LUniques()?.Count(); 
+                
+                    ImGui.Text(cheapDivCards > 0
+                        ? $"Loaded {cheapDivCards} div cards to sell"
+                        : "CANT LOAD LOOT FILTER");
+               
+                    ImGui.Text(zeroLinks > 0
+                        ? $"Loaded {zeroLinks} <6L cheap uniques"
+                        : "CANT LOAD <6L UNIQUE LIST");
+                
+                    ImGui.Text(sixLinks > 0
+                        ? $"Loaded {sixLinks} =6L cheap uniques"
+                        : "CANT LOAD =6L UNIQUE LIST");
+                }
+                catch (Exception)
+                {
+                    ImGui.Text($"EXCEPTION DURING LOADING FILTERS. DO NO USE !!!");
+                }
+                
                 ImGui.InputText("League name", ref Settings.LeagueNameArchnemesis, 255);
                 base.DrawSettings();
                 ImGui.InputText("Poe username", ref Settings.LimitedUsername, 255);
@@ -92,9 +116,6 @@ namespace EZVendor
                     File.Delete(Path.Combine(DirectoryFullName, "ninja0L.json"));
                     File.Delete(Path.Combine(DirectoryFullName, "ninja6L.json"));
                 }
-
-                if (_divCardsProvider.GetSellDivCardsList().Count > 0)
-                    ImGui.Text($"Loaded {_divCardsProvider.GetSellDivCardsList().Count} div cards to sell");
             }
             catch
             {
@@ -693,13 +714,8 @@ namespace EZVendor
         /// <returns></returns>
         private IEnumerator ClickSellWindowAcceptButton()
         {
-            var sellWindows = GameController
-                .IngameState
-                .IngameUi
-                .SellWindow;
-            var btn = Settings.AutoClickDebug2
-                ? sellWindows.CancelButton
-                : sellWindows.AcceptButton;
+            var btn = GetSellWindowUi()?.GetChildAtIndex(4)?.GetChildAtIndex(5)?.GetChildAtIndex(0);
+            if (btn == null) yield break;
             yield return Input.SetCursorPositionSmooth(btn.GetClientRectCache.ClickRandom());
             yield return new WaitTime(100 + Latency);
             if (!Settings.AutoClickAcceptButton2) yield break;
@@ -714,17 +730,47 @@ namespace EZVendor
                 ?.InventoryPanel
                 ?.IsVisible == true;
 
+        private IEnumerable<Element> GetVisibleUi()
+        {
+            var elements = GameController?.IngameState?.IngameUi?.Children?.Where(
+                x =>
+                    x is {Address: > 0, IsValid: true, IsVisible: true, IsVisibleLocal: true});
+            return elements ?? new List<Element>();
+        }
+        
+        private Element GetSellWindowUi()
+        {
+            #region HUD check
+
+            try
+            {
+                var uiElement = GameController?.IngameState?.IngameUi?.SellWindow;
+                if (uiElement?.IsValid == true && uiElement.Width > 0 && uiElement.Height > 0)
+                    return uiElement;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+
+            #endregion
+
+            #region Alternative check
+
+            var ui = GetVisibleUi()?.FirstOrDefault(
+                x =>
+                    x?.ChildCount == 5 &&
+                    (x?.GetChildAtIndex(0)?.ChildCount == 3 &&
+                     x?.GetChildAtIndex(1)?.ChildCount == 1 &&
+                     x?.GetChildAtIndex(3)?.ChildCount == 0) ||
+                    x?.GetChildAtIndex(4)?.GetChildAtIndex(3)?.Text == @"Your Offer");
+            return ui;
+
+            #endregion
+        }
+
         private bool IsSellWindowOpened() =>
-            GameController
-                ?.IngameState
-                ?.IngameUi
-                ?.SellWindow
-                ?.IsVisible == true ||
-            GameController
-                ?.IngameState
-                ?.IngameUi
-                ?.TradeWindow
-                ?.IsVisible == true;
+            GetSellWindowUi()?.IsVisible == true;
 
         private NormalInventoryItem GetInventoryItem(long address) => 
             GetInventoryItems()
