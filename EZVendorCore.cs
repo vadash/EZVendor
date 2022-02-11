@@ -744,8 +744,29 @@ namespace EZVendor
 
             try
             {
+                var uiElement = GameController?.IngameState?.IngameUi?.SellWindowHideout;
+                if (uiElement?.IsValid == true &&
+                    uiElement?.Width > 0 &&
+                    uiElement?.Height > 0 &&
+                    uiElement?.ChildCount == 5 &&
+                    uiElement?.AcceptButton != null &&
+                    uiElement?.CancelButton != null)
+                    return uiElement;
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
+            
+            try
+            {
                 var uiElement = GameController?.IngameState?.IngameUi?.SellWindow;
-                if (uiElement?.IsValid == true && uiElement.Width > 0 && uiElement.Height > 0)
+                if (uiElement?.IsValid == true &&
+                    uiElement?.Width > 0 &&
+                    uiElement?.Height > 0 &&
+                    uiElement?.ChildCount == 5 &&
+                    uiElement?.AcceptButton != null &&
+                    uiElement?.CancelButton != null)
                     return uiElement;
             }
             catch (Exception)
@@ -757,14 +778,21 @@ namespace EZVendor
 
             #region Alternative check
 
-            var ui = GetVisibleUi()?.FirstOrDefault(
-                x =>
-                    x?.ChildCount == 5 &&
-                    (x?.GetChildAtIndex(0)?.ChildCount == 3 &&
-                     x?.GetChildAtIndex(1)?.ChildCount == 1 &&
-                     x?.GetChildAtIndex(3)?.ChildCount == 0) ||
-                    x?.GetChildAtIndex(4)?.GetChildAtIndex(3)?.Text == @"Your Offer");
-            return ui;
+            try
+            {
+                var uiElement = GetVisibleUi()?.FirstOrDefault(
+                    x =>
+                        x?.ChildCount == 5 &&
+                        (x?.GetChildAtIndex(0)?.ChildCount == 3 &&
+                         x?.GetChildAtIndex(1)?.ChildCount == 1 &&
+                         x?.GetChildAtIndex(3)?.ChildCount == 0) ||
+                        x?.GetChildAtIndex(4)?.GetChildAtIndex(3)?.Text == @"Your Offer");
+                return uiElement;
+            }
+            catch (Exception)
+            {
+                return new Element();
+            }
 
             #endregion
         }
