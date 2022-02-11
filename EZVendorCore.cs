@@ -684,7 +684,7 @@ namespace EZVendor
         private IEnumerator OpenNPCTrade()
         {
             if (IsInventoryOpened() && IsSellWindowOpened()) yield break;
-            const string tanePath = @"Metadata/NPC/League/Metamorphosis/MetamorphosisNPCHideout";
+            const string liliPath = @"Metadata/NPC/Epilogue/LillyHideout";
             if (!Settings.AutoOpenTrade2) yield break;
             var npc = GameController
                 ?.Game
@@ -693,10 +693,10 @@ namespace EZVendor
                 ?.ItemsOnGroundLabels
                 ?.FirstOrDefault(labelOnGround =>
                     labelOnGround?.Label?.IsVisibleLocal == true &&
-                    labelOnGround?.ItemOnGround?.Metadata == tanePath);
+                    labelOnGround?.ItemOnGround?.Metadata == liliPath);
             if (npc == null)
             {
-                LogMessage("[EZV] Cant find NPC TANE nearby", 20);
+                LogMessage("[EZV] Cant find NPC LILI nearby", 20);
                 yield break;
             }
 
