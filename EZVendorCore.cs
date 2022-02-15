@@ -19,6 +19,7 @@ using EZVendor.Item.DivCards;
 using EZVendor.Item.Filters;
 using EZVendor.Item.Ninja;
 using ImGuiNET;
+#pragma warning disable CS0618
 
 // ReSharper disable ConstantConditionalAccessQualifier
 namespace EZVendor
@@ -305,8 +306,8 @@ namespace EZVendor
         private void StartMainCoroutine()
         {
             if (Core.ParallelRunner.FindByName(MainCoroutineName) != null) return;
-            LogMessage("[EZV] started");
             Core.ParallelRunner?.Run(new Coroutine(MainRoutine(), this, MainCoroutineName));
+            LogMessage("[EZV] started");
             PublishEvent("ezv_started", null);
         }
 
@@ -314,22 +315,17 @@ namespace EZVendor
         {
             for (var iteration = 0; iteration < MaxIDTimes; iteration++)
             {
+                GetUnidentifiedItems(out var unidList);
+                if (!unidList.Any()) continue;
                 if (Settings.DebugLog2) LogMessage("[EZV] OpenNPCTrade");
                 yield return OpenNPCTrade();
                 if (Settings.DebugLog2) LogMessage("[EZV] WaitForOpenInventory");
                 yield return WaitForOpenInventory();
-                if (Settings.DebugLog2) LogMessage("[EZV] GetUnidentifiedItems");
-                GetUnidentifiedItems(out var unidList);
                 if (Settings.DebugLog2) LogMessage("[EZV] Unid");
                 yield return DoUnid(unidList);
             }
             for (var iteration = 0; iteration < MaxVendorTimes; iteration++)
             {
-                if (Settings.DebugLog2) LogMessage("[EZV] OpenNPCTrade");
-                yield return OpenNPCTrade();
-                if (Settings.DebugLog2) LogMessage("[EZV] WaitForOpenInventory");
-                yield return WaitForOpenInventory();
-
                 #region AnalyzeIdentifiedItems
 
                 IList<MyItem> vendorList;
@@ -349,11 +345,10 @@ namespace EZVendor
 
                 #region RemoveBadVendorRecipes
 
-                var badVendorRecipes = false;
                 try
                 {
                     if (Settings.DebugLog2) LogMessage("[EZV] RemoveBadVendorRecipes");
-                    badVendorRecipes = RemoveBadVendorRecipes(vendorList, vendorBases);
+                    RemoveBadVendorRecipes(vendorList, vendorBases);
                 }
                 catch (Exception e)
                 {
@@ -362,20 +357,24 @@ namespace EZVendor
 
                 #endregion
                
+                if (!vendorList.Any()) continue;
+                if (Settings.DebugLog2) LogMessage("[EZV] OpenNPCTrade");
+                yield return OpenNPCTrade();
+                if (Settings.DebugLog2) LogMessage("[EZV] WaitForOpenInventory");
+                yield return WaitForOpenInventory();
                 if (Settings.DebugLog2) LogMessage("[EZV] VendorGarbage");
                 yield return DoVendorGarbage(vendorList);
                 if (Settings.DebugLog2) LogMessage("[EZV] ClickSellWindowAcceptButton");
                 yield return ClickSellWindowAcceptButton();
                 if (Settings.DebugLog2) LogMessage("[EZV] WaitForClosedInventory");
                 yield return WaitForClosedInventory();
-                if (!badVendorRecipes) break;
             }
 
             // Make sure keys are not stuck
             Input.KeyUp(Keys.LShiftKey);
             Input.KeyUp(Keys.LControlKey);
-            PublishEvent("ezv_finished", null);
             LogMessage("[EZV] finished");
+            PublishEvent("ezv_finished", null);
         }
 
         private IEnumerator WaitForOpenInventory(int timeoutMs = 5000)

@@ -7,6 +7,7 @@ using ExileCore.PoEMemory.Elements.InventoryElements;
 using ExileCore.PoEMemory.MemoryObjects;
 using ExileCore.PoEMemory.Models;
 using ExileCore.Shared.Enums;
+#pragma warning disable CS0618
 
 // ReSharper disable MemberCanBePrivate.Global
 namespace EZVendor.Item.Filters
