@@ -313,6 +313,20 @@ namespace EZVendor
 
         private IEnumerator MainRoutine()
         {
+            #region Open inventory to update items
+
+            if (Settings.DebugLog2) LogMessage($"[EZV] Detected {GetInventoryItems()?.Count()} items in inventory", 15);
+            if (GetInventoryItems()?.Count() is null or <= 1)
+            {
+                if (Settings.DebugLog2) LogMessage("[EZV] OpenInventory");
+                yield return OpenInventory();
+                if (Settings.DebugLog2) LogMessage("[EZV] WaitUntilItemsUpdated");
+                yield return WaitUntilItemsUpdated();
+                if (Settings.DebugLog2) LogMessage($"[EZV] Detected {GetInventoryItems()?.Count()} items in inventory", 15);
+            }
+
+            #endregion
+
             for (var iteration = 0; iteration < MaxIDTimes; iteration++)
             {
                 GetUnidentifiedItems(out var unidList);
@@ -370,6 +384,7 @@ namespace EZVendor
                 yield return WaitForClosedInventory();
             }
 
+            if (IsInventoryOpened()) yield return CloseAllUi();
             // Make sure keys are not stuck
             Input.KeyUp(Keys.LShiftKey);
             Input.KeyUp(Keys.LControlKey);
@@ -377,9 +392,26 @@ namespace EZVendor
             PublishEvent("ezv_finished", null);
         }
 
+        private IEnumerator OpenInventory()
+        {
+            yield return Input.KeyPress(Settings.OpenInventoryStopHotkey);
+            yield return new WaitTime(100 + Latency);
+        }
+        
+        private IEnumerator CloseAllUi()
+        {
+            yield return Input.KeyPress(Settings.CloseAllUiHotkey);
+            yield return new WaitTime(100 + Latency);
+        }
+        
         private IEnumerator WaitForOpenInventory(int timeoutMs = 5000)
         {
             yield return WaitUntil(() => IsInventoryOpened() && IsSellWindowOpened(), timeoutMs);
+        }
+        
+        private IEnumerator WaitUntilItemsUpdated(int timeoutMs = 5000)
+        {
+            yield return WaitUntil(() => IsInventoryOpened() && IsItemsUpdated(), timeoutMs);
         }
 
         private IEnumerator WaitForClosedInventory(int timeoutMs = 5000)
@@ -722,6 +754,8 @@ namespace EZVendor
             yield return new WaitTime(100 + Latency);
         }
 
+        private bool IsItemsUpdated() => GetInventoryItems()?.Count() > 0;
+        
         private bool IsInventoryOpened() =>
             GameController
                 ?.IngameState

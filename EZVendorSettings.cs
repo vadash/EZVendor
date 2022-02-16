@@ -41,11 +41,14 @@ namespace EZVendor
 
         #region Other
 
+        [Menu("Open inventory hotkey")] 
+        public HotkeyNode OpenInventoryStopHotkey { get; set; } = new HotkeyNode(Keys.I);
+        
+        [Menu("Close all UI hotkey")] 
+        public HotkeyNode CloseAllUiHotkey { get; set; } = new HotkeyNode(Keys.End);   
+        
         [Menu("Stop hotkey")] 
         public HotkeyNode StopHotkey2 { get; set; } = new HotkeyNode(Keys.Space);        
-
-        [Menu("Click cancel button instead (debug)")]
-        public ToggleNode AutoClickDebug2 { get; set; } = new ToggleNode(false);
 
         [Menu("Bypass broken ItemMods component (debug)")]
         public ToggleNode BypassBrokenItemMods2 { get; set; } = new ToggleNode(false);
