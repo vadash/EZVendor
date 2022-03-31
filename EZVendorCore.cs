@@ -381,7 +381,7 @@ namespace EZVendor
                 if (Settings.DebugLog2) LogMessage("[EZV] ClickSellWindowAcceptButton");
                 yield return ClickSellWindowAcceptButton();
                 if (Settings.DebugLog2) LogMessage("[EZV] WaitForClosedInventory");
-                yield return WaitForClosedInventory();
+                yield return WaitForSellWindowClosed();
             }
 
             if (IsInventoryOpened()) yield return CloseAllUi();
@@ -414,9 +414,9 @@ namespace EZVendor
             yield return WaitUntil(() => IsInventoryOpened() && IsItemsUpdated(), timeoutMs);
         }
 
-        private IEnumerator WaitForClosedInventory(int timeoutMs = 5000)
+        private IEnumerator WaitForSellWindowClosed(int timeoutMs = 5000)
         {
-            yield return WaitUntil(() => !IsInventoryOpened() && !IsSellWindowOpened(), timeoutMs);
+            yield return WaitUntil(() => !IsSellWindowOpened(), timeoutMs);
         }
 
         private IEnumerator WaitUntil(Func<bool> condition, int timeoutMs = 5000)
