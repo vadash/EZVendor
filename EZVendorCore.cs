@@ -49,9 +49,9 @@ namespace EZVendor
         private INinjaProvider _ninja;
         private IDivCardsProvider _divCardsProvider;
         private int Latency => GameController?.IngameState?.ServerData?.Latency ?? 50;
-        private bool _needLeagueNameUpdate = false;
+        private bool _init;
 
-        public override bool Initialise()
+        private void Init()
         {
             Input.RegisterKey(Keys.LControlKey);
             Input.RegisterKey(Keys.LShiftKey);
@@ -66,7 +66,7 @@ namespace EZVendor
             _divCardsProvider = new LocalDivCardsProvider(
                 Settings.LimitedUsername,
                 Settings.FilterName
-                );
+            );
             _itemFactory = new ItemFactory(
                 GameController,
                 _ninja,
@@ -75,14 +75,19 @@ namespace EZVendor
                 Settings.VendorInfluenced2,
                 Settings.SaveVeiledHelmets,
                 Settings.SaveEnchantedHelmets
-                );
-            return true;
+            );
+            _init = true;
         }
 
         public override void DrawSettings()
         {
             try
             {
+                if (!_init)
+                {
+                    ImGui.Text($"Loading...");
+                    return;
+                }
                 ImGui.Text($"Welcome to EZV {Assembly.GetExecutingAssembly().GetName().Version}");
 
                 try
@@ -182,15 +187,15 @@ namespace EZVendor
         
         public override Job Tick()
         {
-            #region Update league name
+            #region Lazy init
 
-            if (_needLeagueNameUpdate)
+            if (!_init && GameController.InGame)
             {
                 var leagueName = GameController?.IngameState?.ServerData?.League;
                 if (leagueName?.Length is >= 4 and <= 64)
                 {
-                    _needLeagueNameUpdate = false;
                     Settings.LeagueNameArchnemesis = leagueName;
+                    Init();
                 }
             }            
 
@@ -207,7 +212,7 @@ namespace EZVendor
 
             #endregion
             
-            #region start main routine
+            #region Start main routine
 
             if (Settings.MainHotkey2.PressedOnce())
             {
@@ -223,7 +228,7 @@ namespace EZVendor
 
             #endregion
 
-            #region debug item mods
+            #region Debug item mods
 
             if (Settings.CopyStatsHotkey2.PressedOnce())
             {

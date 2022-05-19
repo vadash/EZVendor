@@ -7,9 +7,9 @@ namespace EZVendor
 {
     public class EZVendorSettings : ISettings
     {
-        public ToggleNode Enable { get; set; } = new ToggleNode(false);
+        public ToggleNode Enable { get; set; } = new(false);
 
-        public string LeagueNameArchnemesis = "Archnemesis";
+        public string LeagueNameArchnemesis = "";
         
         #region Main
         

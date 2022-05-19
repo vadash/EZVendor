@@ -43,7 +43,7 @@ namespace EZVendor.Item.Ninja
                 @"https://poe.ninja/api/data/itemoverview?league=" + leagueName +
                 @"&type=UniqueAccessory&language=en"
             };
-            Task.Run(() => UpdateCheapUniques());
+            Task.Run(UpdateCheapUniques);
         }
 
         private void UpdateCheapUniques()
@@ -89,20 +89,20 @@ namespace EZVendor.Item.Ninja
             {
                 var result = new List<string>();
                 foreach (var url in _ninjaUniquesUrls)
-                    using (var webClient = new WebClient())
+                {
+                    using var webClient = new WebClient();
+                    var json = webClient.DownloadString(url);
+                    var jToken = JObject.Parse(json)["lines"];
+                    if (jToken == null) return false;
+                    foreach (var token in jToken)
                     {
-                        var json = webClient.DownloadString(url);
-                        var jToken = JObject.Parse(json)["lines"];
-                        if (jToken == null) return false;
-                        foreach (var token in jToken)
-                        {
-                            if (only6L && (!int.TryParse((string) token?["links"], out var links) || links < 6)) continue;
-                            var chaosValueStr = ((string) token?["chaosValue"])?.Split('.')[0];
-                            if (double.TryParse(chaosValueStr, out var chaosValue) &&
-                                chaosValue <= cutoff)
-                                result.Add((string) token?["name"]);
-                        }
+                        if (only6L && (!int.TryParse((string) token?["links"], out var links) || links < 6)) continue;
+                        var chaosValueStr = ((string) token?["chaosValue"])?.Split('.')[0];
+                        if (double.TryParse(chaosValueStr, out var chaosValue) &&
+                            chaosValue <= cutoff)
+                            result.Add((string) token?["name"]);
                     }
+                }
 
                 onlineData = result.ToHashSet();
                 return true;
