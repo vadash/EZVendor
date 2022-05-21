@@ -71,7 +71,7 @@ namespace EZVendor
                 GameController,
                 _ninja,
                 _divCardsProvider,
-                Settings.BypassBrokenItemMods2,
+                Settings.BypassBrokenItemMods21052022,
                 Settings.VendorInfluenced2,
                 Settings.SaveVeiledHelmets,
                 Settings.SaveEnchantedHelmets
@@ -131,10 +131,7 @@ namespace EZVendor
 
         public override void ReceiveEvent(string eventId, object args)
         {
-            if (!Settings.Enable.Value)
-            {
-                return;
-            }
+            if (!Settings.Enable.Value || !_init) return;
 
             switch (eventId)
             {
@@ -192,11 +189,8 @@ namespace EZVendor
             if (!_init && GameController.InGame)
             {
                 var leagueName = GameController?.IngameState?.ServerData?.League;
-                if (leagueName?.Length is >= 4 and <= 64)
-                {
-                    Settings.LeagueNameArchnemesis = leagueName;
-                    Init();
-                }
+                if (leagueName?.Length is >= 4 and <= 64) Settings.LeagueNameArchnemesis = leagueName;
+                Init();
             }            
 
             #endregion
@@ -480,7 +474,7 @@ namespace EZVendor
                     catch (Exception e)
                     {
                         LogMessage($"[EZV] Found krangled item. Selling " + e.StackTrace, 30);
-                        vendorList.Add(new MyItem(invItem));
+                        //vendorList.Add(new MyItem(invItem));
                     }
                 }
             }

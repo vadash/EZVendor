@@ -64,11 +64,11 @@ namespace EZVendor.Item
 
                 #region vendor rares with broken ItemMods
               
-                if (item.GetComponent<Mods>()?.ItemMods == null)
+                if (_bypassBrokenItemMods && item.GetComponent<Mods>()?.ItemMods == null)
                 {
                     if (item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Rare) 
                         return Actions.Vendor;
-                    if (_bypassBrokenItemMods && item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Unique)
+                    if (item?.GetComponent<Mods>()?.ItemRarity == ItemRarity.Unique)
                         return Actions.Vendor;
                 }
 

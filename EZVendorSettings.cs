@@ -51,7 +51,7 @@ namespace EZVendor
         public HotkeyNode StopHotkey2 { get; set; } = new HotkeyNode(Keys.Space);        
 
         [Menu("Bypass broken ItemMods component (debug)")]
-        public ToggleNode BypassBrokenItemMods2 { get; set; } = new ToggleNode(false);
+        public ToggleNode BypassBrokenItemMods21052022 { get; set; } = new ToggleNode(false);
 
         [Menu("Extra log (debug)")] 
         public ToggleNode DebugLog2 { get; set; } = new ToggleNode(false);
