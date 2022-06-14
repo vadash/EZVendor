@@ -28,7 +28,7 @@ namespace EZVendor.Item.Filters
             try
             {
                 if (ItemModsComponent.ItemRarity != ItemRarity.Unique) return Actions.CantDecide;
-                if (ItemModsComponent.UniqueName.Length <= 4) return Actions.Vendor;
+                if (ItemModsComponent.UniqueName == @"Divide and Conquer") return Actions.Vendor; // 1с jewel
                 if (ItemModsComponent.UniqueName == @"Hotfooted") return Actions.Vendor; // Hotheaded
                 if (ItemModsComponent.UniqueName == @"Ondar's Flight") return Actions.Vendor; // Victario's Flight
                 if (ItemModsComponent.UniqueName == @"Rigvald's Charge") return Actions.Vendor; // big ass sword
