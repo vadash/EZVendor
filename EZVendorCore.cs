@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using System.Windows.Forms;
 using ExileCore;
 using ExileCore.PoEMemory;
@@ -73,8 +74,7 @@ namespace EZVendor
                 _divCardsProvider,
                 Settings.BypassBrokenItemMods21052022,
                 Settings.VendorInfluenced2,
-                Settings.SaveVeiledHelmets,
-                Settings.SaveEnchantedHelmets
+                Settings.SellRares6L
             );
             _init = true;
         }
@@ -98,15 +98,13 @@ namespace EZVendor
                 
                     ImGui.Text(cheapDivCards > 0
                         ? $"Loaded {cheapDivCards} div cards to sell"
-                        : "CANT LOAD LOOT FILTER");
+                        : "CANT LOAD LOOT FILTER. Check offline filter name");
                
                     ImGui.Text(zeroLinks > 0
                         ? $"Loaded {zeroLinks} <6L cheap uniques"
                         : "CANT LOAD <6L UNIQUE LIST");
-                
-                    ImGui.Text(sixLinks > 0
-                        ? $"Loaded {sixLinks} =6L cheap uniques"
-                        : "CANT LOAD =6L UNIQUE LIST");
+
+                    ImGui.Text($"Loaded {sixLinks} =6L cheap uniques");
                 }
                 catch (Exception)
                 {
@@ -121,12 +119,20 @@ namespace EZVendor
                 {
                     File.Delete(Path.Combine(DirectoryFullName, "ninja0L.json"));
                     File.Delete(Path.Combine(DirectoryFullName, "ninja6L.json"));
+                    RestartHud();
                 }
             }
             catch
             {
                 // ignored
             }
+        }
+
+        private static void RestartHud()
+        {
+            var exeDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\..\..";
+            var exeFile = exeDirectory + @"\Loader.exe";
+            Process.Start("cmd.exe", $"/c taskkill /im Loader.exe & timeout 4 & taskkill /f /im Loader.exe & timeout 1 & start /d {exeDirectory} {exeFile}");
         }
 
         public override void ReceiveEvent(string eventId, object args)
@@ -226,7 +232,7 @@ namespace EZVendor
 
             if (Settings.CopyStatsHotkey2.PressedOnce())
             {
-                var invItem = GetInventoryItem(GameController.IngameState.UIHoverElement.Address);
+                var invItem = GetInventoryItem(GameController?.IngameState?.UIHoverElement?.Address);
                 var itemComponent = invItem.Item.GetComponent<Mods>();
                 var stats = itemComponent.UniqueName;
                 try
@@ -326,7 +332,7 @@ namespace EZVendor
 
             #endregion
 
-            for (var iteration = 0; iteration < MaxIDTimes; iteration++)
+            for (var iteration = 0; iteration < (Settings.AutoClickAcceptButton2 ? MaxIDTimes : 1); iteration++)
             {
                 GetUnidentifiedItems(out var unidList);
                 if (!unidList.Any()) continue;
@@ -337,7 +343,7 @@ namespace EZVendor
                 if (Settings.DebugLog2) LogMessage("[EZV] Unid");
                 yield return DoUnid(unidList);
             }
-            for (var iteration = 0; iteration < MaxVendorTimes; iteration++)
+            for (var iteration = 0; iteration < (Settings.AutoClickAcceptButton2 ? MaxVendorTimes : 1); iteration++)
             {
                 #region AnalyzeIdentifiedItems
 
@@ -516,6 +522,7 @@ namespace EZVendor
         /// <param name="vendorList"></param>
         /// <param name="basesCount"></param>
         /// <returns>true - removed something</returns>
+        // ReSharper disable once UnusedMethodReturnValue.Local
         private bool RemoveBadVendorRecipes(
             IList<MyItem> vendorList,
             IDictionary<string, int> basesCount)
@@ -832,7 +839,7 @@ namespace EZVendor
         private bool IsSellWindowOpened() =>
             GetSellWindowUi()?.IsVisible == true;
 
-        private NormalInventoryItem GetInventoryItem(long address) => 
+        private NormalInventoryItem GetInventoryItem(long? address) => 
             GetInventoryItems()
                 ?.FirstOrDefault(item =>
                     item?.Address == address);

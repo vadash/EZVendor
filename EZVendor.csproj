@@ -42,7 +42,7 @@
       <HintPath>..\..\..\..\PoEHelper\GameOffsets.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ImGui.NET, Version=1.71.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="ImGui.NET">
       <HintPath>..\..\..\..\PoEHelper\ImGui.NET.dll</HintPath>
       <Private>False</Private>
     </Reference>

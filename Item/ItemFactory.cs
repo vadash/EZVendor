@@ -4,6 +4,7 @@ using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
 using ExileCore.Shared.Enums;
+using ExileCore.Shared.Nodes;
 using EZVendor.Item.DivCards;
 using EZVendor.Item.Filters;
 using EZVendor.Item.Ninja;
@@ -19,25 +20,21 @@ namespace EZVendor.Item
         private readonly IDivCardsProvider _divCardsProvider;
         private readonly bool _bypassBrokenItemMods;
         private readonly bool _vendorInfluenced;
-        private readonly bool _saveVeiledHelmets;
-        private readonly bool _settingsSaveEnchantedHelmets;
+        private readonly bool _sellRares6L;
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
             IDivCardsProvider divCardsProvider,
             bool bypassBrokenItemMods,
-            bool vendorInfluenced,
-            bool saveVeiledHelmets,
-            bool settingsSaveEnchantedHelmets
-            )
+            bool vendorInfluenced, 
+            bool sellRares6L)
         {
             _gameController = gameController;
             _ninjaProvider = ninjaProvider;
             _divCardsProvider = divCardsProvider;
             _bypassBrokenItemMods = bypassBrokenItemMods;
             _vendorInfluenced = vendorInfluenced;
-            _saveVeiledHelmets = saveVeiledHelmets;
-            _settingsSaveEnchantedHelmets = settingsSaveEnchantedHelmets;
+            _sellRares6L = sellRares6L;
         }
 
         public Actions Evaluate(NormalInventoryItem normalInventoryItem)
@@ -82,10 +79,8 @@ namespace EZVendor.Item
                     filters.Add(new FlaskFilter(_gameController, normalInventoryItem));
                     filters.Add(new PathFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
-                    filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
+                    if (_sellRares6L) filters.Add(new SixLinkFilter(_gameController, normalInventoryItem));
                     filters.Add(new MapFilter(_gameController, normalInventoryItem));
-                    if (_settingsSaveEnchantedHelmets) filters.Add(new EnchantedFilter(_gameController, normalInventoryItem));
-                    if (_saveVeiledHelmets) filters.Add(new VeiledFilter(_gameController, normalInventoryItem));
                     filters.Add(new UniqueFilter(_gameController, normalInventoryItem, _ninjaProvider));
                     filters.Add(new ItemBaseFilter(_gameController, normalInventoryItem));
                 }
