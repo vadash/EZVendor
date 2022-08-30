@@ -80,8 +80,16 @@ namespace EZVendor.Item.DivCards
             var isShow = false;
             foreach (var line in fileContent)
             {
-                if (line.StartsWith(@"Show")) isShow = true;
-                else if (line.StartsWith(@"Hide")) isHide = true;
+                if (line.StartsWith(@"Show"))
+                {
+                    isShow = true;
+                    isHide = false;
+                }
+                else if (line.StartsWith(@"Hide"))
+                {
+                    isHide = true;
+                    isShow = false;
+                }
                 else if (line.Contains(@"BaseType =="))
                 {
                     var div = line.Replace(@"BaseType == ", "");
