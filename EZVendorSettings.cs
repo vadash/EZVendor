@@ -31,6 +31,9 @@ namespace EZVendor
         [Menu("Sell ALL influenced gear")]
         public ToggleNode VendorInfluenced2 { get; set; } = new(true);
         
+        [Menu("Sell ALL fractured gear")]
+        public ToggleNode VendorFractured { get; set; } = new(true);
+        
         [Menu("Sell all rares 6L")]
         public ToggleNode SellRares6L { get; set; } = new(false);
        

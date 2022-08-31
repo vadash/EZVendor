@@ -74,6 +74,7 @@ namespace EZVendor
                 _divCardsProvider,
                 Settings.BypassBrokenItemMods21052022,
                 Settings.VendorInfluenced2,
+                Settings.VendorFractured,
                 Settings.SellRares6L
             );
             _init = true;

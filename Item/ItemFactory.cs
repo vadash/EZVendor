@@ -20,13 +20,15 @@ namespace EZVendor.Item
         private readonly IDivCardsProvider _divCardsProvider;
         private readonly bool _bypassBrokenItemMods;
         private readonly bool _vendorInfluenced;
+        private readonly bool _vendorFractured;
         private readonly bool _sellRares6L;
 
         public ItemFactory(GameController gameController,
             INinjaProvider ninjaProvider,
             IDivCardsProvider divCardsProvider,
             bool bypassBrokenItemMods,
-            bool vendorInfluenced, 
+            bool vendorInfluenced,
+            bool vendorFractured,
             bool sellRares6L)
         {
             _gameController = gameController;
@@ -34,6 +36,7 @@ namespace EZVendor.Item
             _divCardsProvider = divCardsProvider;
             _bypassBrokenItemMods = bypassBrokenItemMods;
             _vendorInfluenced = vendorInfluenced;
+            _vendorFractured = vendorFractured;
             _sellRares6L = sellRares6L;
         }
 
@@ -76,6 +79,7 @@ namespace EZVendor.Item
                 {
                     filters = new List<IEvaluate>();
                     if (!_vendorInfluenced) filters.Add(new InfluenceFilter(_gameController, normalInventoryItem));
+                    if (!_vendorFractured) filters.Add(new FracturedFilter(_gameController, normalInventoryItem));
                     filters.Add(new FlaskFilter(_gameController, normalInventoryItem));
                     filters.Add(new PathFilter(_gameController, normalInventoryItem));
                     filters.Add(new SixSocketFilter(_gameController, normalInventoryItem));
