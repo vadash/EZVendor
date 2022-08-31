@@ -48,17 +48,14 @@ namespace EZVendor.Item.Ninja
 
         private void UpdateCheapUniques()
         {
-            _cheap0LUniques = LoadDataFromFile(_db0LName, out var age1);
-            _cheap6LUniques = LoadDataFromFile(_db6LName, out var age2);
-            if (age1 <= 24 && age2 <= 24) return;
-            if (!GetDataOnline(out var data0L, false, _unique0LChaosCutoff)) return;
-            if (!GetDataOnline(out var data6L, true, _unique6LChaosCutoff)) return;
-            _cheap0LUniques = data0L;
-            _cheap6LUniques = data6L;
-            SaveData(data0L, _db0LName);
-            DebugWindow.LogMsg($"[EZV] Loaded {data0L} shit < 6L uniques. Cutoff {_unique0LChaosCutoff}");
-            SaveData(data6L, _db6LName);
-            DebugWindow.LogMsg($"[EZV] Loaded {data6L} shit 6L uniques. Cutoff {_unique6LChaosCutoff}");
+            if (!GetDataOnline(out _cheap0LUniques, false, _unique0LChaosCutoff))
+                _cheap0LUniques = LoadDataFromFile(_db0LName, out _);
+            if (!GetDataOnline(out _cheap6LUniques, true, _unique6LChaosCutoff)) 
+                _cheap6LUniques = LoadDataFromFile(_db6LName, out _);
+            SaveData(_cheap0LUniques, _db0LName);
+            DebugWindow.LogMsg($"[EZV] Loaded {_cheap0LUniques} shit < 6L uniques. Cutoff {_unique0LChaosCutoff}");
+            SaveData(_cheap6LUniques, _db6LName);
+            DebugWindow.LogMsg($"[EZV] Loaded {_cheap6LUniques} shit 6L uniques. Cutoff {_unique6LChaosCutoff}");
         }
 
         private HashSet<string> LoadDataFromFile(string dbName, out double databaseAgeHours)
