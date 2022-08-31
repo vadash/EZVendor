@@ -333,6 +333,20 @@ namespace EZVendor
 
             #endregion
 
+            // If we need to check fractured mod this item need to be mouse over
+            if (!Settings.VendorFractured)
+            {
+                GetUnverifiedItems(out var mouseOverList);
+                if (mouseOverList.Any())
+                {
+                    if (Settings.DebugLog2) LogMessage("[EZV] OpenNPCTrade");
+                    yield return OpenNPCTrade();
+                    if (Settings.DebugLog2) LogMessage("[EZV] WaitForOpenInventory");
+                    yield return WaitForOpenInventory();
+                    if (Settings.DebugLog2) LogMessage("[EZV] RefreshItemCache");
+                    yield return RefreshCache(mouseOverList);
+                }
+            }
             for (var iteration = 0; iteration < (Settings.AutoClickAcceptButton2 ? MaxIDTimes : 1); iteration++)
             {
                 GetUnidentifiedItems(out var unidList);
@@ -517,6 +531,37 @@ namespace EZVendor
             }
         }
 
+        /// <summary>
+        /// Some items need to be mouse over to get all the info
+        /// </summary>
+        /// <param name="mouseOverList"></param>
+        private void GetUnverifiedItems(
+            out IList<MyItem> mouseOverList)
+        {
+            try
+            {
+                var query =
+                    from invItem in GetInventoryItems()
+                    let item = invItem.Item
+                    let modsComponent = item.HasComponent<Mods>() ? item.GetComponent<Mods>() : null
+                    where item.Type == EntityType.Error || modsComponent?.ItemRarity is ItemRarity.Magic or ItemRarity.Rare
+                    select new MyItem(invItem);
+                
+                mouseOverList = query.ToList();
+            }
+            catch (Exception)
+            {
+                mouseOverList = new List<MyItem>();
+            }
+        }
+        
+        private IEnumerator RefreshCache(IList<MyItem> itemList)
+        {
+            if (!itemList.Any()) yield break;
+            LogMessage($"[EZV] Want to refresh cache for {itemList.Count} items");
+            yield return ClickAll(itemList, 1, Keys.None, MouseButtons.Right);
+        }
+        
         /// <summary>
         ///     Removes bad vendor recipes like 5 same bases
         /// </summary>
