@@ -58,13 +58,13 @@ namespace EZVendor.Item.Ninja
             DebugWindow.LogMsg($"[EZV] Loaded {_cheap6LUniques} shit 6L uniques. Cutoff {_unique6LChaosCutoff}");
         }
 
-        private HashSet<string> LoadDataFromFile(string dbName, out double databaseAgeHours)
+        private static HashSet<string> LoadDataFromFile(string dbName, out double databaseAgeHours)
         {
             try
             {
-                if (File.Exists(_db0LName))
+                if (File.Exists(dbName))
                 {
-                    var dif = DateTime.Now - File.GetLastWriteTime(_db0LName);
+                    var dif = DateTime.Now - File.GetLastWriteTime(dbName);
                     databaseAgeHours = dif.TotalHours;
                     var json = File.ReadAllText(dbName);
                     return JsonConvert.DeserializeObject<HashSet<string>>(json);
