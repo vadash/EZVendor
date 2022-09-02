@@ -66,7 +66,8 @@ namespace EZVendor
                 Settings.LeagueNameArchnemesis);
             _divCardsProvider = new LocalDivCardsProvider(
                 Settings.LimitedUsername,
-                Settings.FilterName
+                Settings.FilterName,
+                DirectoryFullName
             );
             _itemFactory = new ItemFactory(
                 GameController,

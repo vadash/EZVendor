@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Newtonsoft.Json;
 
 namespace EZVendor.Item.DivCards
 {
     public class LocalDivCardsProvider : IDivCardsProvider
     {
+        private readonly string _dbCheapCardsName;
         private readonly string _settingsLimitedUsername;
         private readonly string _settingsFilterName;
 
         public LocalDivCardsProvider(
             string settingsLimitedUsername,
-            string settingsFilterName
-            )
+            string settingsFilterName, 
+            string directoryFullName)
         {
             _settingsLimitedUsername = settingsLimitedUsername;
             _settingsFilterName = settingsFilterName;
+            _dbCheapCardsName = Path.Combine(directoryFullName, "cheapCards.json");
             _sellDivCardsList = new Lazy<List<string>>(GetSellDivsListValue);
         }
         
@@ -32,9 +35,10 @@ namespace EZVendor.Item.DivCards
             if (!RemoveComments(ref allLines)) return null;
             if (!SplitByGroup(allLines, out var keepDivs, out var sellDivs)) return null;
             if (!LogDebug(keepDivs, sellDivs, out _)) return null;
+            if (!SaveCache(sellDivs)) return null;
             return keepDivs.Count > 1 && sellDivs.Count > 1 ? sellDivs : null;
         }
-        
+
         private bool ReadLocalFilter(out List<string> fileContent)
         {
             fileContent = null;
@@ -119,6 +123,20 @@ namespace EZVendor.Item.DivCards
             result += Environment.NewLine + "bad:" + Environment.NewLine;
             result = sellDivs.Aggregate(result, (current, card) => current + card + ",");
             return true;
+        }
+        
+        private bool SaveCache(List<string> sellDivs)
+        {
+            try
+            {
+                var json = JsonConvert.SerializeObject(sellDivs);
+                File.WriteAllText(_dbCheapCardsName, json);
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }
