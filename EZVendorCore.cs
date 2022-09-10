@@ -514,14 +514,14 @@ namespace EZVendor
                 var query =
                     from invItem in GetInventoryItems()
                     let item = invItem.Item
+                    let baseComponent = item.HasComponent<Base>() ? item.GetComponent<Base>() : null
+                    where baseComponent?.isCorrupted != true // skip krangled
                     let modsComponent = item.HasComponent<Mods>() ? item.GetComponent<Mods>() : null
                     where item.Type == EntityType.Error || modsComponent?.Identified == false
                     let socketsComponent = item.HasComponent<Sockets>() ? item.GetComponent<Sockets>() : null
                     let sixSockets = socketsComponent?.NumberOfSockets == 6
                     let sixLinks = socketsComponent?.LargestLinkSize == 6
                     where !sixSockets || sixLinks // skip 6S
-                    let mapComponent = item.HasComponent<Map>()
-                    where !mapComponent // skip maps
                     select new MyItem(invItem);
                 
                 unidList = query.ToList();
