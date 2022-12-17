@@ -1,4 +1,4 @@
 ﻿using System.Reflection;
 
 [assembly: AssemblyProduct("EZVendor")]
-[assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.1.*")]

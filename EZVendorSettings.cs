@@ -57,10 +57,10 @@ namespace EZVendor
         public ToggleNode DebugLog2 { get; set; } = new(false);
 
         [Menu("Delay after mouse move, ms")]
-        public RangeNode<int> Delay1AfterMouseMove2 { get; set; } = new(40, 0, 100);
+        public RangeNode<int> Delay1AfterMouseMove4 { get; set; } = new(25, 25, 100);
 
         [Menu("Delay after click, ms")]
-        public RangeNode<int> Delay2AfterClick2 { get; set; } = new(40, 0, 100);
+        public RangeNode<int> Delay2AfterClick4 { get; set; } = new(25, 25, 100);
 
         [Menu("Debug copy inventory item stats under cursor hotkey")]
         public HotkeyNode CopyStatsHotkey2 { get; set; } = new(Keys.NumPad7);

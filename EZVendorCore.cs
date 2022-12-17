@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using System.Windows.Forms;
 using ExileCore;
 using ExileCore.PoEMemory;
@@ -677,7 +676,7 @@ namespace EZVendor
         {
             if (!itemList.Any()) yield break;
             LogMessage($"[EZV] Want to sell {itemList.Count} items");
-            yield return ClickAll(itemList, 4, Keys.LControlKey, MouseButtons.Left);
+            yield return ClickAll(itemList, 3, Keys.LControlKey, MouseButtons.Left);
             Input.KeyUp(Keys.LControlKey);
         }
 
@@ -749,13 +748,12 @@ namespace EZVendor
             for (var j = 0; j < 10; j++) // timeout = 10 x DelayAfterMouseMove
             {
                 if (!invItem.GetClientRectCache.Intersects(GetPlayerInventory().GetClientRectCache)) yield break;
-                yield return Input.SetCursorPositionSmooth(invItem.GetClientRect().ClickRandom());
-                yield return new WaitTime(Settings.Delay1AfterMouseMove2);
-                if (GameController.IngameState.UIHoverElement.Address > 0 &&
-                    GameController.IngameState.UIHoverElement.Address == invItem.Address)
+                Input.SetCursorPos(invItem.GetClientRect().ClickRandomNum());
+                yield return new WaitTime(Settings.Delay1AfterMouseMove4 + Latency);
+                if (GameController.IngameState.UIHoverElement.Address == invItem.Address)
                 {
                     Input.Click(mouseButton);
-                    yield return new WaitTime(Settings.Delay2AfterClick2);
+                    yield return new WaitTime(Settings.Delay2AfterClick4 + Latency);
                     break;
                 }
             }
@@ -785,7 +783,7 @@ namespace EZVendor
             }
 
             Input.KeyDown(Keys.LControlKey);
-            yield return Input.SetCursorPositionSmooth(npc.Label.GetClientRectCache.ClickRandom());
+            Input.SetCursorPos(npc.Label.GetClientRectCache.ClickRandomNum());
             yield return new WaitTime(100 + Latency);
             Input.Click(MouseButtons.Left);
             yield return new WaitTime(100 + Latency);
@@ -800,7 +798,7 @@ namespace EZVendor
         {
             var btn = GetSellWindowUi()?.GetChildAtIndex(4)?.GetChildAtIndex(5)?.GetChildAtIndex(0);
             if (btn == null) yield break;
-            yield return Input.SetCursorPositionSmooth(btn.GetClientRectCache.ClickRandom());
+            Input.SetCursorPos(btn.GetClientRectCache.ClickRandomNum());
             yield return new WaitTime(100 + Latency);
             if (!Settings.AutoClickAcceptButton2) yield break;
             Input.Click(MouseButtons.Left);

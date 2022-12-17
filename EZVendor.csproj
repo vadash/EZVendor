@@ -1,37 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{36A8C444-46EE-489A-8C47-C5415F5EE59C}</ProjectGuid>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Deterministic>false</Deterministic>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EZVendor</RootNamespace>
-    <AssemblyName>EZVendor</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <PlatformTarget>x64</PlatformTarget>
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>C:\projects\PoeHelper\Plugins\Compiled\EZVendor\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x64</PlatformTarget>
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>C:\projects\PoeHelper\Plugins\Compiled\EZVendor\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>C:\projects\PoeHelper\Plugins\Compiled\EZVendor</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>C:\projects\PoeHelper\Plugins\Compiled\EZVendor</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExileCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
@@ -46,7 +38,6 @@
       <HintPath>..\..\..\..\PoEHelper\ImGui.NET.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="mscorlib" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\..\..\PoEHelper\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
@@ -55,44 +46,5 @@
       <HintPath>..\..\..\..\PoEHelper\SharpDX.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Numerics" />
-    <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="EZVendorCore.cs" />
-    <Compile Include="EZVendorSettings.cs" />
-    <Compile Include="Item\DivCards\IDivCardsProvider.cs" />
-    <Compile Include="Item\DivCards\LocalDivCardsProvider.cs" />
-    <Compile Include="Item\Filters\AbstractBasicItem.cs" />
-    <Compile Include="Item\Filters\EnchantedFilter.cs" />
-    <Compile Include="Item\Filters\FlaskFilter.cs" />
-    <Compile Include="Item\Filters\FracturedFilter.cs" />
-    <Compile Include="Item\Filters\IEvaluate.cs" />
-    <Compile Include="Item\Filters\InfluenceFilter.cs" />
-    <Compile Include="Item\Filters\DivCardsFilter.cs" />
-    <Compile Include="Item\Filters\MapFilter.cs" />
-    <Compile Include="Item\Filters\PathFilter.cs" />
-    <Compile Include="Item\Filters\SixLinkFilter.cs" />
-    <Compile Include="Item\Filters\SixSocketFilter.cs" />
-    <Compile Include="Item\Filters\UniqueFilter.cs" />
-    <Compile Include="Item\Filters\VeiledFilter.cs" />
-    <Compile Include="Item\Filters\ItemBaseFilter.cs" />
-    <Compile Include="Item\Ninja\INinjaProvider.cs" />
-    <Compile Include="Item\Ninja\NinjaUniqueProvider.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Item\IItemFactory.cs" />
-    <Compile Include="Item\ItemFactory.cs" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-         Other similar extension points exist, see Microsoft.Common.targets.
-    <Target Name="BeforeBuild">
-    </Target>
-    <Target Name="AfterBuild">
-    </Target>
-    -->
 </Project>
