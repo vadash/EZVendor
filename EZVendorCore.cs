@@ -480,8 +480,8 @@ namespace EZVendor
                 {
                     try
                     {
-                        if (invItem.Item.Rarity == MonsterRarity.Error ||
-                            !invItem.Item.HasComponent<Base>() ||
+                        if (//invItem.Item.Rarity == MonsterRarity.Error ||
+                            //!invItem.Item.HasComponent<Base>() ||
                             _itemFactory.Evaluate(invItem) == Actions.Vendor)
                         {
                             vendorList.Add(new MyItem(invItem));
