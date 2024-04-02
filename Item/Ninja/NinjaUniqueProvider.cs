@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ExileCore;
 using Newtonsoft.Json;
@@ -43,20 +44,19 @@ namespace EZVendor.Item.Ninja
                 @"https://poe.ninja/api/data/itemoverview?league=" + leagueName +
                 @"&type=UniqueAccessory&language=en"
             };
-            Task.Run(UpdateCheapUniques);
+            Task.Run(UpdateCheapUniquesAsync);
         }
 
-        private void UpdateCheapUniques()
+        private async Task UpdateCheapUniquesAsync()
         {
-            if (!GetDataOnline(out _cheap0LUniques, false, _unique0LChaosCutoff))
-                _cheap0LUniques = LoadDataFromFile(_db0LName, out _);
-            if (!GetDataOnline(out _cheap6LUniques, true, _unique6LChaosCutoff)) 
-                _cheap6LUniques = LoadDataFromFile(_db6LName, out _);
+            _cheap0LUniques = await GetDataOnlineAsync(false, _unique0LChaosCutoff) ?? LoadDataFromFile(_db0LName, out _);
+            _cheap6LUniques = await GetDataOnlineAsync(true, _unique6LChaosCutoff) ?? LoadDataFromFile(_db6LName, out _);
             SaveData(_cheap0LUniques, _db0LName);
-            DebugWindow.LogMsg($"[EZV] Loaded {_cheap0LUniques} shit < 6L uniques. Cutoff {_unique0LChaosCutoff}");
+            DebugWindow.LogMsg($"[EZV] Loaded {_cheap0LUniques.Count} < 6L uniques. Cutoff {_unique0LChaosCutoff}");
             SaveData(_cheap6LUniques, _db6LName);
-            DebugWindow.LogMsg($"[EZV] Loaded {_cheap6LUniques} shit 6L uniques. Cutoff {_unique6LChaosCutoff}");
+            DebugWindow.LogMsg($"[EZV] Loaded {_cheap6LUniques.Count} 6L uniques. Cutoff {_unique6LChaosCutoff}");
         }
+
 
         private static HashSet<string> LoadDataFromFile(string dbName, out double databaseAgeHours)
         {
@@ -79,36 +79,39 @@ namespace EZVendor.Item.Ninja
             return new HashSet<string>();
         }
 
-        private bool GetDataOnline(out HashSet<string> onlineData, bool only6L, int cutoff)
+        private async Task<HashSet<string>> GetDataOnlineAsync(bool only6L, int cutoff)
         {
-            onlineData = new HashSet<string>();
+            var onlineData = new HashSet<string>();
             try
             {
                 var result = new List<string>();
+                using var httpClient = new HttpClient();
                 foreach (var url in _ninjaUniquesUrls)
                 {
-                    using var webClient = new WebClient();
-                    var json = webClient.DownloadString(url);
+                    var response = await httpClient.GetAsync(url);
+                    response.EnsureSuccessStatusCode();
+                    var json = await response.Content.ReadAsStringAsync();
                     var jToken = JObject.Parse(json)["lines"];
-                    if (jToken == null) return false;
+                    if (jToken == null) return onlineData;
                     foreach (var token in jToken)
                     {
-                        if (only6L && (!int.TryParse((string) token?["links"], out var links) || links < 6)) continue;
-                        var chaosValueStr = ((string) token?["chaosValue"])?.Split('.')[0];
-                        if (double.TryParse(chaosValueStr, out var chaosValue) &&
-                            chaosValue <= cutoff)
-                            result.Add((string) token?["name"]);
+                        if (only6L && (!int.TryParse((string)token?["links"], out var links) || links < 6)) continue;
+                        var chaosValueStr = ((string)token?["chaosValue"])?.Split('.')[0];
+                        if (double.TryParse(chaosValueStr, out var chaosValue) && chaosValue <= cutoff)
+                        {
+                            result.Add((string)token?["name"]);
+                        }
                     }
                 }
-
                 onlineData = result.ToHashSet();
-                return true;
+                return onlineData;
             }
             catch (Exception)
             {
-                return false;
+                return onlineData;
             }
         }
+
 
         private static void SaveData(HashSet<string> data, string filename)
         {

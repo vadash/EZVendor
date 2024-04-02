@@ -131,9 +131,19 @@ namespace EZVendor
 
         private static void RestartHud()
         {
-            var exeDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + @"\..\..\..";
-            var exeFile = exeDirectory + @"\Loader.exe";
-            Process.Start("cmd.exe", $"/c taskkill /im Loader.exe & timeout 4 & taskkill /f /im Loader.exe & timeout 1 & start /d {exeDirectory} {exeFile}");
+            var exeDirectory = AppDomain.CurrentDomain.BaseDirectory;
+            var exeFiles = Directory.GetFiles(exeDirectory, "*.exe");
+            foreach (var exeFile in exeFiles)
+            {
+                var fileName = Path.GetFileName(exeFile);
+                var processes = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(fileName));
+                if (processes.Length > 0)
+                {
+                    // Select the first running process and use its filename for restart
+                    Process.Start("cmd.exe", $"/c taskkill /im \"{fileName}\" & timeout 3 & taskkill /f /im \"{fileName}\" & timeout 1 & pushd \"{exeDirectory}\" & start \"\" \"{fileName}\"");
+                    return;
+                }
+            }
         }
 
         public override void ReceiveEvent(string eventId, object args)
@@ -819,7 +829,7 @@ namespace EZVendor
             var elements = GameController?.IngameState?.IngameUi?.Children?.Where(
                 x =>
                     x is {Address: > 0, IsValid: true, IsVisible: true, IsVisibleLocal: true});
-            return elements ?? new List<Element>();
+            return elements ?? [];
         }
         
         private Element GetSellWindowUi()

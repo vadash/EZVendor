@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Debug without src": {
+      "commandName": "Executable",
+      "executablePath": "C:\\projects\\Awakened PoE Trade\\Awakened PoE Trade.exe",
+      "workingDirectory": "C:\\projects\\Awakened PoE Trade"
+    }
+  }
+}
