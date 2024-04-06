@@ -20,10 +20,10 @@
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-    <OutputPath>C:\projects\PoeHelper\Plugins\Compiled\EZVendor</OutputPath>
+    <OutputPath>$(exapiPackage)\Plugins\Compiled\EZVendor</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-    <OutputPath>C:\projects\PoeHelper\Plugins\Compiled\EZVendor</OutputPath>
+    <OutputPath>$(exapiPackage)\Plugins\Compiled\EZVendor</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>1701;1702;CA1416;</NoWarn>
@@ -33,23 +33,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ExileCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\projects\PoeHelper\ExileCore.dll</HintPath>
+      <HintPath>$(exapiPackage)\ExileCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GameOffsets, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>C:\projects\PoeHelper\GameOffsets.dll</HintPath>
+      <HintPath>$(exapiPackage)\GameOffsets.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ImGui.NET">
-      <HintPath>C:\projects\PoeHelper\ImGui.NET.dll</HintPath>
+      <HintPath>$(exapiPackage)\ImGui.NET.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>C:\projects\PoeHelper\Newtonsoft.Json.dll</HintPath>
+      <HintPath>$(exapiPackage)\Newtonsoft.Json.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SharpDX.Mathematics, Version=4.2.0.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1">
-      <HintPath>C:\projects\PoeHelper\SharpDX.Mathematics.dll</HintPath>
+      <HintPath>$(exapiPackage)\SharpDX.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
