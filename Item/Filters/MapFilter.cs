@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using ExileCore;
 using ExileCore.PoEMemory.Components;
 using ExileCore.PoEMemory.Elements.InventoryElements;
@@ -18,7 +18,7 @@ namespace EZVendor.Item.Filters
         {
             try
             {
-                return Item.HasComponent<Map>()
+                return Item.HasComponent<MapKey>()
                     ? Actions.Keep
                     : Actions.CantDecide;
             }
